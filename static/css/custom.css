@@ -1,0 +1,974 @@
+/* ==========================================
+* CUSTOM CLASSES
+* ========================================== */
+
+.pointer {
+    cursor: pointer;
+}
+
+.link {
+    text-decoration: none !important;
+    cursor: pointer;
+}
+
+.p-01 {
+    padding: 0.1rem;
+}
+
+.shadow-btn:hover {
+    box-shadow: -4px -4px 8px 4px rgba(0, 0, 0, 0.2), 4px 4px 8px 4px rgba(0, 0, 0, 0.2);
+}
+
+.btn-circle.btn-md {
+    width: 70px;
+    height: 70px;
+    padding-top: 0.5rem;
+    border-radius: 35px;
+    font-size: 24px;
+    line-height: 1.33;
+}
+
+.btn-circle.btn-xl {
+    width: 140px;
+    height: 140px;
+    padding-top: 0.5rem;
+    border-radius: 70px;
+    font-size: 40px;
+    line-height: 2.6;
+}
+
+.btn-circle {
+    width: 40px;
+    height: 40px;
+    padding: 8px 0;
+    border-radius: 20px;
+    text-align: center;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.bg-blur {
+    /* Add the blur effect */
+    filter: blur(12px);
+    -webkit-filter: blur(12px);
+
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.bg-image {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.dark-gradient {
+    /* TITANIUM */
+    background: -webkit-linear-gradient(to right, #2f2d38, #424c51);
+    background: linear-gradient(to right, #2f2d38, #424c51);
+}
+
+.light-gradient {
+    background: -webkit-linear-gradient(to right, #eaeaea, #fafafa);
+    background: linear-gradient(to right, #eaeaea, #fafafa);
+}
+
+.enlarge-content > * {
+    transition: all 0.3s;
+    transform: scale(0.8);
+}
+
+.enlarge-content:hover > * {
+    transform: scale(1);
+}
+
+.vert-anim:hover {
+    -webkit-animation: mover 0.7s infinite alternate;
+    animation: mover 0.7s infinite alternate;
+}
+
+@-webkit-keyframes mover {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes mover {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(-10px);
+    }
+}
+
+/* ==========================================
+* PROFILE INDEX CLASSES
+* ========================================== */
+
+.profile-text {
+    color: #f8f9fa;
+}
+
+.profile-link:hover {
+    color: #d7d8d9;
+}
+
+.profile-btn {
+    background-color: #f8f9fa;
+    color: #343a40;
+}
+
+.profile-btn:hover {
+    background-color: #dcddde;
+    color: #343a40;
+}
+
+.profile-btn > svg > path {
+    fill: #343a40;
+}
+
+.profile-bg-overlay {
+    background-image: linear-gradient(to right, rgba(40, 40, 40, 0.7), rgba(10, 10, 10, 0.95));
+    width: 100%;
+    height: 100%;
+}
+
+.profile-bg-image-wrapper {
+    box-shadow: none;
+    border: none;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    top: 0;
+}
+
+.profile-bg-image {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: -1;
+}
+
+@media screen and (min-width: 992px) {
+    .profile-bg-image-wrapper {
+        box-shadow: -20px 20px 0 0 rgb(255, 198, 157);
+        position: relative;
+        border: 2px solid #8a8a8a;
+        overflow: hidden;
+        border-radius: 1rem;
+        min-height: 14rem;
+        height: auto;
+        width: auto;
+    }
+
+    .profile-bg-image {
+        min-height: 12rem;
+    }
+
+    .profile-bg-overlay {
+        width: 0;
+        height: 0;
+    }
+
+    .profile-text {
+        color: #343a40;
+    }
+
+    .profile-link:hover {
+        color: #767d83;
+    }
+
+    .profile-btn {
+        background-color: #343a40;
+        color: #f8f9fa;
+    }
+
+    .profile-btn:hover {
+        background-color: #58646a;
+        color: #f8f9fa;
+    }
+
+    .profile-btn > svg > path {
+        fill: #fff;
+    }
+}
+
+/* ==========================================
+* FOOTER CLASS
+* ========================================== */
+
+.footer {
+    width: 100%;
+    /*position: absolute;*/
+}
+
+/*@media screen and (min-width: 576px) {*/
+/*    .footer {*/
+/*        bottom: -44rem;*/
+/*    }*/
+/*}*/
+
+/*@media screen and (min-width: 768px) {*/
+/*    .footer {*/
+/*        bottom: -36rem;*/
+/*    }*/
+/*}*/
+
+/*@media screen and (min-width: 992px) {*/
+/*    .footer {*/
+/*        bottom: -30rem;*/
+/*    }*/
+/*}*/
+
+/* ==========================================
+* SOCIAL BUTTONS CLASSES
+* ========================================== */
+
+.social-btn,
+.social-btn:before,
+.social-btn .fa-2x {
+    transition: all 0.25s;
+    transition-timing-function: cubic-bezier(0.31, -0.105, 0.43, 0);
+}
+
+.social-btn:before {
+    top: 90%;
+    left: -110%;
+}
+
+.social-btn.facebook:before {
+    background-color: #3b5998;
+}
+
+.facebook > svg > path {
+    transition: all 0.3s;
+    fill: #3b5998;
+}
+
+.facebook:hover > svg > path {
+    fill: #ffffff;
+}
+
+.social-btn.google:before {
+    background-color: #dc4a38;
+}
+
+.google > svg > path {
+    transition: all 0.3s;
+    fill: #dc4a38;
+}
+
+.google:hover > svg > path {
+    fill: #ffffff;
+}
+
+.social-btn.vk:before {
+    background-color: #4c75a3;
+}
+
+.vk > svg > path {
+    transition: all 0.3s;
+    fill: #4c75a3;
+}
+
+.vk:hover > svg > path {
+    fill: #ffffff;
+}
+
+.social-btn.yandex:before {
+    background-color: #ef2725;
+}
+
+.yandex > svg > path {
+    transition: all 0.3s;
+    fill: #ef2725;
+}
+
+.yandex:hover > svg > path {
+    fill: #ffffff;
+}
+
+.social-btn.instagram:before {
+    /*background: linear-gradient(#405de6, #5851db, #833ab4, #c13584, #e1306c, #fd1d1d);*/
+    background: radial-gradient(circle at 30% 107%, #405de6 0%, #5851db 5%, #833ab4 45%, #c13584 60%, #fd1d1d 90%);
+}
+
+.instagram > svg > path {
+    transition: all 0.3s;
+    fill: #F83489;
+}
+
+.instagram:hover > svg > path {
+    fill: #ffffff;
+}
+
+.social-btn:hover:before {
+    top: -10%;
+    left: -10%;
+}
+
+.social-btn {
+    display: inline-block;
+    background-color: #fff;
+    margin: 0 0.3rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.4);
+}
+
+.social-btn:before {
+    content: '';
+    width: 140%;
+    height: 140%;
+    position: absolute;
+    transform: rotate(45deg);
+}
+
+/* ==========================================
+* STATISTICS CLASSES
+* ========================================== */
+
+.statistics-box {
+    max-height: calc(80% - 2rem);
+    max-width: calc(100% - 2rem);
+    width: 18rem;
+    height: 20rem;
+    box-sizing: content-box;
+    display: flex;
+    flex-direction: column;
+    border-radius: 0.6rem;
+    overflow: hidden;
+    overflow-y: auto;
+    background-color: #ffffff;
+    box-shadow: -4px -4px 16px 8px rgba(0, 0, 0, 0.2), 4px 4px 16px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.statistics-box-header {
+    align-self: start;
+    width: 100%;
+    border-bottom: 1px solid #b3b7bb;
+}
+
+.statistics-btn {
+    border: none;
+    background-color: inherit;
+    cursor: pointer;
+}
+
+.statistics-btn:focus {
+    outline: none;
+}
+
+/* ==========================================
+* FONTS CLASSES
+* ========================================== */
+
+@font-face {
+    font-family: comfortaa-light;
+    src: url(/static/fonts/Comfortaa-Light.ttf);
+}
+
+.comfortaa-light {
+    font-family: comfortaa-light;
+}
+
+@font-face {
+    font-family: montserrat-extralight;
+    src: url(/static/fonts/Montserrat-ExtraLight.ttf);
+}
+
+.montserrat-extralight {
+    font-family: montserrat-extralight;
+}
+
+@font-face {
+    font-family: montserrat-light;
+    src: url(/static/fonts/Montserrat-Light.ttf);
+}
+
+.montserrat-light {
+    font-family: montserrat-light;
+}
+
+@font-face {
+    font-family: montserrat-black;
+    src: url(/static/fonts/Montserrat-Black.ttf);
+}
+
+.montserrat-black {
+    font-family: montserrat-black;
+}
+
+@font-face {
+    font-family: montserrat-bold;
+    src: url(/static/fonts/Montserrat-Bold.ttf);
+}
+
+.montserrat-bold {
+    font-family: montserrat-bold;
+}
+
+@font-face {
+    font-family: montserrat-regular;
+    src: url(/static/fonts/Montserrat-Regular.ttf);
+}
+
+.montserrat-regular {
+    font-family: montserrat-regular;
+}
+
+@font-face {
+    font-family: didactgothic-regular;
+    src: url(/static/fonts/DidactGothic-Regular.ttf);
+}
+
+.didactgothic-regular {
+    font-family: didactgothic-regular;
+}
+
+@font-face {
+    font-family: raleway-extralight;
+    src: url(/static/fonts/Raleway-ExtraLight.ttf);
+}
+
+.raleway-extralight {
+    font-family: raleway-extralight;
+}
+
+@font-face {
+    font-family: raleway-light;
+    src: url(/static/fonts/Raleway-Light.ttf);
+}
+
+.raleway-light {
+    font-family: raleway-light;
+}
+
+/* ==========================================
+* LOADING SPINNER CLASSES
+* ========================================== */
+
+.spinner {
+    text-align: center;
+}
+
+.spinner > div {
+    width: 18px;
+    height: 18px;
+    background-color: #fff;
+
+    border-radius: 100%;
+    display: inline-block;
+    -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+    animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+}
+
+.spinner .bounce1 {
+    -webkit-animation-delay: -0.32s;
+    animation-delay: -0.32s;
+}
+
+.spinner .bounce2 {
+    -webkit-animation-delay: -0.16s;
+    animation-delay: -0.16s;
+}
+
+@-webkit-keyframes sk-bouncedelay {
+    0%, 80%, 100% {
+        -webkit-transform: scale(0)
+    }
+    40% {
+        -webkit-transform: scale(1.0)
+    }
+}
+
+@keyframes sk-bouncedelay {
+    0%, 80%, 100% {
+        -webkit-transform: scale(0);
+        transform: scale(0);
+    }
+    40% {
+        -webkit-transform: scale(1.0);
+        transform: scale(1.0);
+    }
+}
+
+/* ==========================================
+* ROUND PROGRESS CLASSES
+* ========================================== */
+
+@media screen and (min-width: 440px) {
+    .progress-round {
+        width: 150px;
+        height: 150px;
+        background: none;
+        position: relative;
+    }
+
+    .progress-round::after {
+        content: "";
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        border: 6px solid #eee;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+    .progress-round > span {
+        width: 50%;
+        height: 100%;
+        overflow: hidden;
+        position: absolute;
+        top: 0;
+        z-index: 1;
+    }
+
+    .progress-round .progress-left {
+        left: 0;
+    }
+
+    .progress-round .progress-bar {
+        width: 100%;
+        height: 100%;
+        background: none;
+        border-width: 6px;
+        border-style: solid;
+        position: absolute;
+        top: 0;
+    }
+
+    .progress-round .progress-left .progress-bar {
+        left: 100%;
+        border-top-right-radius: 80px;
+        border-bottom-right-radius: 80px;
+        border-left: 0;
+        -webkit-transform-origin: center left;
+        transform-origin: center left;
+    }
+
+    .progress-round .progress-right {
+        right: 0;
+    }
+
+    .progress-round .progress-right .progress-bar {
+        left: -100%;
+        border-top-left-radius: 80px;
+        border-bottom-left-radius: 80px;
+        border-right: 0;
+        -webkit-transform-origin: center right;
+        transform-origin: center right;
+    }
+
+    .progress-round .progress-value {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+}
+
+/* ==========================================
+* POPULAR CARD CLASSES
+* ========================================== */
+
+.popular-deck-label {
+    opacity: 0.3;
+    transition: 0.3s;
+}
+
+.popular-deck-description {
+    width: 100%;
+    display: flex;
+    opacity: 0;
+    transition: 0.3s;
+}
+
+.popular-deck:hover .popular-deck-description {
+    opacity: 1;
+}
+
+.popular-deck:hover .popular-deck-label {
+    opacity: 1;
+}
+
+/* ==========================================
+* CUSTOM CARD CLASSES
+* ========================================== */
+
+.deck-card {
+    width: 100%;
+    display: inline-block;
+    border-radius: 0.75rem;
+    box-shadow: 0 0 16px 0 rgba(0, 0, 0, 0.25);
+    transition: all 0.3s ease;
+    background: #fff;
+    position: relative;
+    overflow: hidden;
+}
+
+.deck-card-img {
+    position: relative;
+    height: 12rem;
+    width: 100%;
+    background-color: #fff;
+    transition: opacity 0.3s ease;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.deck-card-img .overlay {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    opacity: 0;
+}
+
+
+.deck-card-img .overlay .overlay-content {
+    display: flex;
+    line-height: 1rem;
+    width: 100%;
+    text-align: center;
+    color: #fff;
+}
+
+.deck-card-img .overlay .overlay-content a {
+    color: #fff;
+    padding: 0.75rem 1.5rem;
+    display: inline-block;
+    border: 1pt solid rgba(255, 255, 255, 0.4);
+    border-radius: 2rem;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.deck-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 25px 0 rgba(0, 0, 0, 0.3), 0 0 1px 0 rgba(0, 0, 0, 0.25);
+}
+
+.deck-card:hover .deck-card-content {
+    box-shadow: inset 0 3px 0 0 #cc3f55;
+    border-color: #cc3f55;
+}
+
+.deck-card:hover .deck-card-img .overlay {
+    background-color: rgba(25, 29, 38, 0.85);
+    transition: opacity 0.3s ease;
+    opacity: 1;
+}
+
+.deck-card-img .overlay .overlay-content a:hover {
+    background: #cc3f55;
+    border-color: #cc2940;
+}
+
+.deck-card-content {
+    width: 100%;
+    background-color: #fff;
+    border-top: 1px solid #e9e9eb;
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+    padding-top: 1rem;
+    transition: all 0.3s ease;
+}
+
+.deck-card-content a {
+    text-decoration: none;
+    color: #202927;
+}
+
+.deck-card-content h2, .deck-card-content a h2 {
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.deck-card-content p, .deck-card-content a p {
+    font-size: 0.8rem;
+    font-weight: 400;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: rgba(32, 41, 28, 0.8);
+}
+
+/* ==========================================
+* CUSTOM BUTTONS CLASSES
+* ========================================== */
+/*-------------------1-------------------*/
+.btn-one {
+    color: #fff;
+    transition: all 0.5s;
+    position: relative;
+}
+
+.btn-one::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    background-color: rgba(255, 255, 255, 0.2);
+    transition: all 0.3s;
+}
+
+.btn-one:hover::before {
+    opacity: 0;
+    transform: scale(0.5, 0.5);
+}
+
+.btn-one::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    opacity: 0;
+    transition: all 0.3s;
+    border: 1pt solid rgba(240, 240, 240, 0.8);
+    transform: scale(1.2, 1.2);
+}
+
+.btn-one:hover::after {
+    opacity: 1;
+    transform: scale(1, 1);
+}
+
+/*-------------------2-------------------*/
+.btn-two {
+    overflow: hidden;
+    transition: 0.3s;
+}
+
+.btn-two:after {
+    position: absolute;
+    transition: 0.3s;
+    content: '';
+    width: 0;
+    left: 50%;
+    bottom: -0.2rem;
+    height: 3px;
+    background: #e33161;
+}
+
+.btn-two:hover {
+    cursor: pointer;
+}
+
+.btn-two:hover:after {
+    width: 100%;
+    left: 0;
+}
+
+/*-------------------3-------------------*/
+.btn-three {
+    overflow: hidden;
+    transition: 0.3s;
+}
+
+.btn-three:after {
+    position: absolute;
+    transition: 0.3s;
+    content: '';
+    right: 0;
+    left: auto;
+    width: 0;
+    bottom: -0.2rem;
+    height: 3px;
+    background: #e33161;
+}
+
+.btn-three:hover {
+    cursor: pointer;
+}
+
+.btn-three:hover:after {
+    width: 100%;
+    left: 0;
+}
+
+/*-------------------4-------------------*/
+.btn-four {
+    padding: 0.5rem;
+    border: 1mm solid #e5335a;
+    text-align: center;
+    overflow: hidden;
+    position: relative;
+    transition: 0.3s;
+    color: #dc3545;
+}
+
+.btn-four:after {
+    position: absolute;
+    transition: 0.3s;
+    content: '';
+    height: 130%;
+    left: -15%;
+    width: 0;
+    bottom: -15%;
+    transform: skewX(18deg);
+    z-index: -1;
+    background: #dc3545;
+}
+
+.btn-four:hover {
+    cursor: pointer;
+    color: #ffffff;
+}
+
+.btn-four:hover:after {
+    left: -15%;
+    width: 130%;
+}
+
+/* ==========================================
+* RESPONSIVE FONTS CLASSES
+* ========================================== */
+
+.rh1 {
+    font-size: 1.7rem;
+}
+
+.rh2 {
+    font-size: 1.5rem;
+}
+
+.rh3 {
+    font-size: 1.3rem;
+}
+
+.rh4 {
+    font-size: 1.1rem;
+}
+
+.rh5 {
+    font-size: 0.9rem;
+}
+
+.rh6 {
+    font-size: 0.8rem;
+}
+
+@media screen and (min-width: 576px) {
+    .rh1 {
+        font-size: 1.85rem;
+    }
+
+    .rh2 {
+        font-size: 1.50rem;
+    }
+
+    .rh3 {
+        font-size: 1.35rem;
+    }
+
+    .rh4 {
+        font-size: 1.2rem;
+    }
+
+    .rh5 {
+        font-size: 1rem;
+    }
+
+    .rh6 {
+        font-size: 0.8rem;
+    }
+}
+
+/* If the screen size is 600px wide or less, set the font-size of <div> to 30px */
+@media screen and (min-width: 768px) {
+    .rh1 {
+        font-size: 2rem;
+    }
+
+    .rh2 {
+        font-size: 1.70rem;
+    }
+
+    .rh3 {
+        font-size: 1.5rem;
+    }
+
+    .rh4 {
+        font-size: 1.3rem;
+    }
+
+    .rh5 {
+        font-size: 1.15rem;
+    }
+
+    .rh6 {
+        font-size: 0.85rem;
+    }
+}
+
+@media (min-width: 992px) {
+    .rh1 {
+        font-size: 2.3rem;
+    }
+
+    .rh2 {
+        font-size: 1.85rem;
+    }
+
+    .rh3 {
+        font-size: 1.6rem;
+    }
+
+    .rh4 {
+        font-size: 1.4rem;
+    }
+
+    .rh5 {
+        font-size: 1.15rem;
+    }
+
+    .rh6 {
+        font-size: 0.9rem;
+    }
+}
+
+@media (min-width: 1200px) {
+    .rh1 {
+        font-size: 2.5rem;
+    }
+
+    .rh2 {
+        font-size: 2rem;
+    }
+
+    .rh3 {
+        font-size: 1.75rem;
+    }
+
+    .rh4 {
+        font-size: 1.5rem;
+    }
+
+    .rh5 {
+        font-size: 1.2rem;
+    }
+
+    .rh6 {
+        font-size: 1rem;
+    }
+}
+
+

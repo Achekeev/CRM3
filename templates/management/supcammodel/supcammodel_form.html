@@ -1,0 +1,51 @@
+{% extends 'management/layout.html' %}
+
+{% load static common_tags %}
+
+{% block breadcrumbs %}
+    <div><a class="active" href="{% url 'management:supcammodel:index' %}">Суп Модели</a></div>
+    <div>&nbsp;&nbsp;>&nbsp;&nbsp;</div>
+    <div class="text-middle text-secondary">Создание / Изменение Суп Модели</div>
+{% endblock %}
+
+{% block content %}
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <table class="table">
+            <thead>
+            <tr>
+                <th>{{ form.username.label }}</th>
+                <th>{{ form.password.label }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>{{ form.username|class:'form-control' }}</td>
+                <td>{{ form.password|class:'form-control' }}</td>
+            </tr>
+            <tr>
+                <th>{{ form.name.label }}</th>
+                <th>{{ form.phone.label }}</th>
+            </tr>
+            <tr>
+                <td>{{ form.name|class:'form-control' }}</td>
+                <td>{{ form.phone|class:'form-control' }}</td>
+            </tr>
+            <tr>
+                <th>{{ form.email.label }}</th>
+                <th>{{ form.contacts.label }}</th>
+            </tr>
+            <tr>
+                <td>{{ form.email|class:'form-control' }}</td>
+                <td>{{ form.contacts|class:'form-control' }}</td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="row my-5">
+            <div class="col-md-9"></div>
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-block btn-info">Сохранить</button>
+            </div>
+        </div>
+    </form>
+{% endblock %}

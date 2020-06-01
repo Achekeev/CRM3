@@ -1,0 +1,119 @@
+{% extends 'management/layout.html' %}
+
+{% load static common_tags %}
+
+{% block breadcrumbs %}
+    <div><a class="active" href="{% url 'management:cammodel:index' %}">Модели</a></div>
+    <div>&nbsp;&nbsp;>&nbsp;&nbsp;</div>
+    <div class="text-middle text-secondary">Детали Модели</div>
+{% endblock %}
+
+{% block content %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Имя:</th>
+            <th>{{ cammodel.name }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th>Описание:</th>
+            <td>{{ cammodel.description }}</td>
+        </tr>
+        <tr>
+            <th>Рассписание:</th>
+            <td>{{ cammodel.schedule }}</td>
+        </tr>
+        <tr>
+            <th>Телефон:</th>
+            <td>{{ cammodel.phone }}</td>
+        </tr>
+        <tr>
+            <th>Почта:</th>
+            <td>{{ cammodel.email }}</td>
+        </tr>
+        <tr>
+            <th>Оператор:</th>
+            {% if cammodel.operator %}
+                <td><a class="text-info" href="{% url 'management:operator:detail' cammodel.operator.id %}">{{ cammodel.operator.name }}</a></td>
+            {% endif %}
+            <td></td>
+        </tr>
+        {% if request.user.is_superuser %}
+            <tr>
+                <th>Процент:</th>
+                <td>{{ cammodel.percent }} %</td>
+            </tr>
+            <tr>
+                <th>Логин:</th>
+                <td>{{ cammodel.login }}</td>
+            </tr>
+            <tr>
+                <th>Пароль:</th>
+                <td>{{ cammodel.password }}</td>
+            </tr>
+        {% endif %}
+        <tr>
+            <th>Паспорт:</th>
+            {% if cammodel.passport_scan %}
+                <td><a href="{{ cammodel.passport_scan.url }}" target="_blank"><img style="width: 15rem; height: 10rem; object-fit: cover; position: center" src="{{ cammodel.passport_scan.url }}"></a>
+                </td>
+            {% else %}
+                <td>Отсутствует</td>
+            {% endif %}
+        </tr>
+        <tr>
+            <th>Фотографии</th>
+            <th></th>
+        </tr>
+        {% if cammodel.images.all %}
+            <tr>
+                <td colspan="2">
+                    <div class="row">
+                        {% for image in cammodel.images.all %}
+                            <div class="col-6 col-lg-4 mb-2">
+                                <a href="{{ image.image.url }}" target="_blank"><img style="width: 100%; height: 12rem; object-fit: cover; position: center" src="{{ image.image.url }}" alt=""></a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </td>
+            </tr>
+        {% else %}
+            <td>Отсутствуют</td>
+            <td></td>
+        {% endif %}
+        </tbody>
+    </table>
+    <div class="row justify-content-end my-5">
+        <div class="col-md-12"></div>
+        {% if request.user.is_superuser or request.user.is_staff %}
+            <div class="col-md-2">
+                <a class="btn btn-block {% if cammodel.filled_today %}btn-secondary{% else %}btn-warning{% endif %} mb-2" href="{% url 'management:accounting:createfromcammodel' cammodel.id %}">Ввести Итог</a>
+            </div>
+        {% endif %}
+        {% if request.user.is_superuser %}
+            <div class="col-md-2">
+                <a class="btn btn-block btn-info mb-2" href="{% url 'management:accounting:modelstatistics' cammodel.id %}">Статистика</a>
+            </div>
+            <div class="col-md-2">
+                <a class="btn btn-block btn-success mb-2" href="{% url 'management:cammodel:edit' cammodel.id %}">Редактировать</a>
+            </div>
+            <div class="col-md-2">
+                <a class="btn btn-danger btn-block mb-2" href="{% url 'management:cammodel:remove' cammodel.id %}?{{ request.GET.urlencode }}">Удалить</a>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript">
+        $('.image-formset').formset({
+            addText: 'Добавить фото',
+            deleteText: 'Удалить',
+            addCssClass: 'btn btn-info',
+            deleteCssClass: 'btn btn-danger',
+            prefix: 'images',
+        });
+    </script>
+{% endblock %}

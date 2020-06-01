@@ -1,0 +1,237 @@
+{% load static common_tags %}
+
+<!DOCTYPE html>
+<html lang="en" class="h-100">
+<head>
+    <title>Grusha Studio</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="shortcut icon" type="image/x-icon" href="/static/img/favicon.jpg"/>
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/custom.min.css' %}">
+    {% block styles %} {% endblock %}
+</head>
+<body style="position: relative; min-height: 100vh; background-color: #fafafa">
+
+{% block navbar %}
+    <nav class="navbar navbar-expand-md navbar-dark dark-gradient" style="background-color: #2d3339">
+        <a class="navbar-brand ml-lg-5 ml-md-3 ml-sm-1 ml-1" href="{% url 'common:index' %}">
+            <strong class="text-warning h4 font-weight-bold">Grusha</strong><strong>Studio</strong></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse text-center" id="navbarSupportedContent">
+            <ul class="nav navbar-nav ml-auto">
+                {% if request.user.is_authenticated %}
+                    <li class="nav-item">
+{#                        <a class="nav-link text-light" href="{% url 'profile:index' %}">Личный кабинет</a>#}
+                    </li>
+                    <li class="nav-item dropdown bg-light pl-1">
+                        <a class="nav-link pointer text-dark dropdown-toggle px-5" id="navbarDropdown"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% firstof user.first_name user.username %}</a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                            {% if request.user.is_superuser or request.user.is_staff %}
+                                <a class="dropdown-item" href="{% url 'management:index' %}">Менеджмент</a>
+                            {% endif %}
+                            <a class="dropdown-item" href="{% url 'authentication:logout' %}">выйти</a>
+                        </div>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link text-light" href="#" data-toggle="modal" data-target="#loginModalForm">войти</a>
+                    </li>
+{#                    <li class="nav-item">#}
+{#                        <a class="btn btn-light" href="#" data-toggle="modal" data-target="#signupModalForm">регистрация</a>#}
+{#                    </li>#}
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+{% endblock %}
+
+<!-- Alert -->
+<div class="row justify-content-end align-content-end">
+    <div class="alerts col-md-6 col-12 col-lg-5 col-xl-4" style="position: absolute;">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% endif %} mt-2 ml-1 mr-1" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>
+<!-- Alert -->
+
+<div id="content-block" style="min-height: 100vh; height: auto">
+    {% block content %}{% endblock %}
+</div>
+
+{% block footer %}
+    <div class="footer light-gradient pb-5">
+        <div class="line w-100" style="height: 1px; background-color: #cacaca"></div>
+        <div class="container-fluid px-5 pt-5 text-dark">
+            <div class="row">
+                <div class="col-md">
+                    <div class="mb-4 text-center text-sm-left">
+                        <a class="link" href="{% url 'common:index' %}">
+                            <strong class="text-danger h2 font-weight-bold">Grusha</strong><strong class="text-dark h2 font-weight-bold">Studio</strong></a>
+                    </div>
+                </div>
+                <div class="col-md">
+                    <div class="mb-4 text-center text-sm-left">
+                        <h2 class="font-weight-bold">Ссылки</h2>
+                        <ul class="list-unstyled">
+                            {% if request.user.is_authenticated %}
+                                <li><a href="{% url 'authentication:logout' %}" class="py-2 d-block link text-dark">Выйти</a></li>
+                                {% if request.user.is_superuser %}
+                                    <li><a href="{% url 'management:index' %}" class="py-2 d-block link text-dark">Админка</a></li>
+{#                                    <li><a class="py-2 d-block link text-dark" href="/api">Апишки</a></li>#}
+                                {% endif %}
+                            {% else %}
+                                <li><a href="{% url 'authentication:login' %}" class="py-2 d-block link text-dark">Войти</a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md">
+                    <div class="mb-4 text-center text-sm-left">
+                        <h2 class="font-weight-bold">Контактная информация</h2>
+                        <ul class="list-unstyled">
+
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md">
+                    <div class="mb-4 text-center text-sm-left">
+                        <ul class="list-unstyled">
+                            <li>
+                                <a href="#" class="social-btn instagram btn-circle btn-md enlarge-content">
+                                    <svg style="width: 100%; height: 100%" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M1152 896q0-106-75-181t-181-75-181 75-75 181 75 181 181 75 181-75 75-181zm138 0q0 164-115
+                                         279t-279 115-279-115-115-279 115-279 279-115 279 115 115 279zm108-410q0 38-27 65t-65 27-65-27-27-65 27-65
+                                         65-27 65 27 27 65zm-502-220q-7 0-76.5-.5t-105.5 0-96.5 3-103 10-71.5 18.5q-50 20-88 58t-58 88q-11
+                                         29-18.5 71.5t-10 103-3 96.5 0 105.5.5 76.5-.5 76.5 0 105.5 3 96.5 10 103 18.5 71.5q20 50 58 88t88 58q29
+                                         11 71.5 18.5t103 10 96.5 3 105.5 0 76.5-.5 76.5.5 105.5 0 96.5-3 103-10 71.5-18.5q50-20 88-58t58-88q11-29
+                                         18.5-71.5t10-103 3-96.5 0-105.5-.5-76.5.5-76.5 0-105.5-3-96.5-10-103-18.5-71.5q-20-50-58-88t-88-58q-29-11-71.5-18.5t-103-10-96.5-3-105.5
+                                         0-76.5.5zm768 630q0 229-5 317-10 208-124 322t-322 124q-88 5-317 5t-317-5q-208-10-322-124t-124-322q-5-88-5-317t5-317q10-208
+                                         124-322t322-124q88-5 317-5t317 5q208 10 322 124t124 322q5 88 5 317z" fill="#fff"></path>
+                                    </svg>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- .site-footer -->
+{% endblock %}
+
+<!-- Modal -->
+{% if signup_form %}
+    <div class="modal fade" id="signupModalForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <!--Content-->
+            <div class="modal-content">
+                <!--Header-->
+                <div class="modal-header">
+                    <h3 class="modal-title w-100 dark-grey-text font-weight-bold my-1" id="myModalLabel">
+                        <strong>Регистрация</strong></h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <!--Body-->
+                <form method="post" action="{% url 'common:index' %}" accept-charset="utf-8">{% csrf_token %}
+                    <div class="modal-body">
+                        <!--Body-->
+                        <div class="form-group">
+                            <label data-error="wrong" data-success="right" for="id_email"></label>
+                            <input name="email" id="id_email" class="form-control validate"
+                                   placeholder="Введите Ваш email...">
+                            <label data-error="wrong" data-success="right" for="id_password1"></label><br>
+                            <input type="password" name="password1" id="id_password1" class="form-control validate"
+                                   placeholder="Введите пароль...">
+                            <label data-error="wrong" data-success="right" for="id_password2"></label><br>
+                            <input type="password" name="password2" id="id_password2" class="form-control validate"
+                                   placeholder="Повторите пароль...">
+                        </div>
+                        <div class="text-center mb-3">
+                            <button type="submit" class="btn btn-primary btn-block btn-rounded">Зарегистрироваться
+                            </button>
+                        </div>
+                        <a href="#" data-toggle="modal" data-dismiss="modal" data-target="#loginModalForm" class="text-right d-flex justify-content-center mb-1 pt-1">
+                            Уже есть аккаунт?</a>
+                    </div>
+                    <!--Footer-->
+                </form>
+            </div>
+            <!--/.Content-->
+        </div>
+    </div>
+{% endif %}
+<!-- Modal -->
+
+<!-- Modal -->
+<div class="modal fade" id="loginModalForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+        <!--Content-->
+        <div class="modal-content">
+            <!--Header-->
+            <div class="modal-header">
+                <h3 class="modal-title w-100 dark-grey-text font-weight-bold" id="myModalLabel">
+                    <strong>Вход</strong></h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <!--Body-->
+            <form method="post" action="{% url 'authentication:login' %}" accept-charset="utf-8">{% csrf_token %}
+                <div class="modal-body">
+                    <!--Body-->
+                    <div class="form-group">
+                        <label data-error="wrong" data-success="right" for="id_username"></label>
+                        <input name="username" id="id_username" class="form-control validate"
+                               placeholder="Введите Ваш email...">
+
+                        <label data-error="wrong" data-success="right" for="id_password"></label><br>
+                        <input type="password" name="password" id="id_password" class="form-control validate"
+                               placeholder="Введите пароль...">
+                    </div>
+                    <br>
+                    <div class="text-center mb-1">
+                        <button type="submit" class="btn btn-primary btn-block btn-rounded">войти</button>
+                    </div>
+                </div>
+                <!--Footer-->
+            </form>
+            <a href="#" data-toggle="modal" data-dismiss="modal" data-target="#signupModalForm" class="text-right d-flex justify-content-center mb-1 pt-1">
+                Зарегистрироваться</a>
+        </div>
+        <!--/.Content-->
+    </div>
+</div>
+<!-- Modal -->
+
+{% block modal %}{% endblock %}
+
+<script type='text/javascript' src='{% static 'jquery/jquery.min.js' %}'></script>
+<script type='text/javascript' src='{% static 'js/popper.min.js' %}'></script>
+<script type='text/javascript' src='{% static 'bootstrap/js/bootstrap.min.js' %}'></script>
+<script type='text/javascript' src='{% static 'js/custom.min.js' %}'></script>
+
+<script>
+    $('.alert').delay(16000).fadeOut("slow", function () {
+        $(this).remove();
+    });
+</script>
+
+{% block scripts %}
+
+{% endblock %}
+
+</body>
+</html>

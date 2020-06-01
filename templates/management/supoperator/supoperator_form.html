@@ -1,0 +1,65 @@
+{% extends 'management/layout.html' %}
+
+{% load common_tags static %}
+
+{% block breadcrumbs %}
+    <div><a class="active" href="{% url 'management:supoperator:index' %}">Суп Операторы</a></div>
+    <div>&nbsp;&nbsp;>&nbsp;&nbsp;</div>
+    <div class="text-middle text-secondary">Создание / Изменение Суп Оператора</div>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <form method="post" enctype="multipart/form-data">{% csrf_token %}
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>{{ form.username.label }}</th>
+                        <th>{{ form.password.label }}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>{{ form.username|class:'form-control' }}</td>
+                        <td>{{ form.password|class:'form-control' }}</td>
+                    </tr>
+                    <tr>
+                        <th>{{ form.name.label }}</th>
+                        <th>{{ form.email.label }}</th>
+                    </tr>
+                    <tr>
+                        <td>{{ form.name|class:'form-control' }}</td>
+                        <td>{{ form.email|class:'form-control' }}</td>
+                    </tr>
+                    <tr>
+                        <th>{{ form.contacts.label }}</th>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <td colspan="2">{{ form.contacts|class:'form-control' }}</td>
+                    </tr>
+                    <tr>
+                        <th>{{ form.phone.label }}</th>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <td>{{ form.phone|class:'form-control' }}</td>
+                        <td></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="row justify-content-end">
+                    {% if request.user.is_superuser and form.instance.pk %}
+                        <div class="col-3">
+                            <button type="submit" class="btn btn-info btn-block float-right">Сохранить</button>
+                        </div>
+                        <div class="col-2">
+                            <a class="btn btn-danger btn-block" href="{% url 'management:supoperator:remove' form.instance.id %}">Удалить</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

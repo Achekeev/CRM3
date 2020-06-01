@@ -1,0 +1,45 @@
+{% extends 'layout.html' %}
+
+{% block navbar %}{% endblock %}
+
+{% block content %}
+    <div class="container" style="min-height: 100vh">
+        <div class="row justify-content-center align-items-center" style="min-height: 100vh">
+            <div class="col-md-5">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="w-100 dark-grey-text font-weight-bold text-center"><strong>Вход</strong></h3>
+                        <a href="{% url 'common:index' %}" class="text-right d-flex justify-content-center my-3 pt-1">
+                            На главную</a>
+                        <form method="post" action="{% url 'authentication:login' %}" accept-charset="utf-8">{% csrf_token %}
+                            {% if form.errors.values %}
+                                <div class="alert alert-danger">
+                                    {{ form.errors }}
+                                </div>
+                            {% endif %}
+                            <div>
+                                <label data-error="wrong" data-success="right" for="id_username"></label>
+                                <input name="username" id="id_username" class="form-control validate"
+                                       placeholder="Введите Ваш email...">
+                            </div>
+                            <div>
+                                <label data-error="wrong" data-success="right" for="id_password"></label><br>
+                                <input type="password" name="password" id="id_password" class="form-control validate"
+                                       placeholder="Введите пароль...">
+                            </div>
+                            <br>
+                            <br>
+                            <div class="text-center mb-1">
+                                <button type="submit" class="btn btn-primary btn-block btn-rounded">войти</button>
+                            </div>
+                        </form>
+                        <a href="{% url 'authentication:signup' %}" class="text-right d-flex justify-content-center my-3 pt-1">
+                            Зарегистрироваться</a>
+                    </div>
+                </div>
+                <p class="text-center mt-3">Copyright &copy; MadCourses {% now 'Y' %}</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block footer %}{% endblock %}

@@ -1,0 +1,77 @@
+{% extends 'management/layout.html' %}
+
+{% load common_tags static %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/gijgo.min.css' %}">
+{% endblock %}
+
+{% block breadcrumbs %}
+    <div class="text-middle text-secondary">Статистика</div>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row mb-3">
+                <div class="col-10">
+                    <form action="" method="get">
+                        <div class="row">
+                            <div class="col-3 px-1">{{ filter_form.date_from|class:'datepicker' }}</div>
+                            <div class="col-3 px-1">{{ filter_form.date_to|class:'datepicker' }}</div>
+                            <div class="col-2 px-1">
+                                <button class="btn btn-secondary" type="submit">Посчитать</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Имя Модели</th>
+                    <th>Итог</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>{{ cammodel_dict.cammodel_name }}</td>
+                    <td>{{ cammodel_dict.total }}</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th>Имя Оператора</th>
+                    <th>Итог</th>
+                    <th></th>
+                </tr>
+                {% for data in data_list %}
+                    <tr>
+                        <td>{{ data.operator_name }}</td>
+                        <td>{{ data.total }}</td>
+                        <td></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'js/gijgo.min.js' %}"></script>
+    <script src="{% static 'js/messages.ru-ru.js' %}"></script>
+    <script>
+        $('.datepicker').each(function (index) {
+            $(this).attr('autocomplete', 'off');
+            $(this).datepicker({
+                uiLibrary: 'bootstrap4',
+                format: 'yyyy-mm-dd',
+                locale: 'ru-ru',
+                showRightIcon: false,
+                header: true,
+            });
+        });
+    </script>
+{% endblock %}

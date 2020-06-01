@@ -1,0 +1,129 @@
+{% extends 'management/layout.html' %}
+
+{% load common_tags static %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/gijgo.min.css' %}">
+{% endblock %}
+
+{% block breadcrumbs %}
+    <div class="text-middle text-secondary">Статистика</div>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            {% if filter_form %}
+                <div class="row mb-3">
+                    <div class="col-12">
+                        <form action="" method="get">
+                            <div class="row">
+                                <div class="col-4 px-1">{{ filter_form.name|class:'form-control' }}</div>
+                                <div class="col-3 px-1">{{ filter_form.date_from|class:'datepicker' }}</div>
+                                <div class="col-3 px-1">{{ filter_form.date_to|class:'datepicker' }}</div>
+                                <div class="col-2 px-1">
+                                    <button class="btn btn-secondary btn-block" type="submit">Поиск</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            {% endif %}
+            {% if daily_totals and daily_totals|length > 0 %}
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>ФИО Пары</th>
+                        <th>{% verbose_name daily_totals.0 'created_at' %}</th>
+                        <th>{% verbose_name daily_totals.0 'cammodel_amount' %}</th>
+                        <th>{% verbose_name daily_totals.0 'operator_amount' %}</th>
+                        <th>{% verbose_name daily_totals.0 'total' %}</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for daily_total in daily_totals %}
+                        <tr>
+                            {% if request.user.is_superuser or request.user.is_staff %}
+                                <td class="align-middle"><a class="text-info" href="{% url 'management:accounting:detail' daily_total.id %}?{{ request.GET.urlencode }}">{{ daily_total.cammodel_name }}
+                                    {% if daily_total.operator_name %} - {{ daily_total.operator_name }}{% endif %}</a></td>
+                                <td class="align-middle">{{ daily_total.created_at }}</td>
+                                <td class="align-middle">{{ daily_total.cammodel_amount }}</td>
+                                <td class="align-middle">{{ daily_total.operator_amount }}</td>
+                                <td class="align-middle">{{ daily_total.total }}</td>
+                            {% endif %}
+                            {% if request.user.is_superuser %}
+                                <td class="align-middle"><a class="btn btn-danger" href="{% url 'management:accounting:remove' daily_total.id %}?{{ request.GET.urlencode }}">Удалить</a></td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                {% if daily_totals.paginator.num_pages > 1 %}
+                    <div class="col-12 mt-3 mb-5 px-0">
+                        <ul class="pagination">
+                            {% if daily_totals.has_previous %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page=1">&laquo;</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ daily_totals.previous_page_number }}">Назад</a>
+                                </li>
+                            {% else %}
+                                <li class="page-item disabled">
+                                    <a class="page-link">&laquo;</a>
+                                </li>
+                                <li class="page-item disabled">
+                                    <a class="page-link">Назад</a>
+                                </li>
+                            {% endif %}
+                            {% for i in page_range %}
+                                {% ifequal i daily_totals.number %}
+                                    <li class="page-item active">
+                                        <span class="page-link">{{ i }}</span>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                                    </li>
+                                {% endifequal %}
+                            {% endfor %}
+                            {% if daily_totals.has_next %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ daily_totals.next_page_number }}">Далее</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ daily_totals.paginator.num_pages }}">&raquo;</a>
+                                </li>
+                            {% else %}
+                                <li class="page-item disabled">
+                                    <a class="page-link">Далее</a>
+                                </li>
+                                <li class="page-item disabled">
+                                    <a class="page-link">&raquo;</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'js/gijgo.min.js' %}"></script>
+    <script src="{% static 'js/messages.ru-ru.js' %}"></script>
+    <script>
+        $('.datepicker').each(function (index) {
+            $(this).attr('autocomplete', 'off');
+            $(this).datepicker({
+                uiLibrary: 'bootstrap4',
+                format: 'yyyy-mm-dd',
+                locale: 'ru-ru',
+                showRightIcon: false,
+                header: true,
+            });
+        });
+    </script>
+{% endblock %}

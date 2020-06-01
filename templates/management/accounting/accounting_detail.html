@@ -1,0 +1,49 @@
+{% extends 'management/layout.html' %}
+
+{% load static common_tags %}
+
+{% block breadcrumbs %}
+    <div><a class="active" href="{% url 'management:accounting:index' %}">Статистика</a></div>
+    <div>&nbsp;&nbsp;>&nbsp;&nbsp;</div>
+    <div class="text-middle text-secondary">Детали Итого</div>
+{% endblock %}
+
+{% block content %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Имя Модели:</th>
+            <th>{{ daily_total.cammodel_name }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th>Имя Оператора:</th>
+            <td>{{ daily_total.operator_name }}</td>
+        </tr>
+        <tr>
+            <th>Всего:</th>
+            <td>{{ daily_total.total }}</td>
+        </tr>
+        <tr>
+            <th>Доля Модели:</th>
+            <td>{{ daily_total.cammodel_amount }}</td>
+        </tr>
+        <tr>
+            <th>Доля Оператора:</th>
+            <td>{{ daily_total.operator_amount }}</td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="row my-5">
+        <div class="col-md-6"></div>
+        {% if request.user.is_superuser %}
+            <div class="col-md-3">
+                {#<a class="btn btn-success btn-block" href="{% url 'management:accounting:edit' daily_total.id %}?{{ request.GET.urlencode }}">Редактировать</a>#}
+            </div>
+            <div class="col-md-3">
+                <a class="btn btn-danger btn-block" href="{% url 'management:accounting:remove' daily_total.id %}?{{ request.GET.urlencode }}">Удалить</a>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

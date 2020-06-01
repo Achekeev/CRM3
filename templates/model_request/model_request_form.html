@@ -1,0 +1,108 @@
+{% extends 'layout.html' %}
+
+{% load static common_tags %}
+
+{% block content %}
+    <div class="container">
+        <div class="row my-5">
+            <form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
+                <div class="col-12">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>{{ form.name.label }}</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td colspan="2">{{ form.name|class:'form-control' }}</td>
+                        </tr>
+                        <tr>
+                            <th>{{ form.description.label }}</th>
+                            <th>{{ form.passport_scan.label }}</th>
+                        </tr>
+                        <tr>
+                            <td>{{ form.description|class:'form-control' }}</td>
+                            <td>{{ form.passport_scan|class:'form-control imgInp' }}</td>
+                        </tr>
+                        <tr>
+                            <th>{{ form.phone.label }}</th>
+                            <th>{{ form.email.label }}</th>
+                        </tr>
+                        <tr>
+                            <td>{{ form.phone|class:'form-control' }}</td>
+                            <td>{{ form.email|class:'form-control' }}</td>
+                        </tr>
+                        <tr>
+                            <th>{{ form.contacts.label }}</th>
+                            <th></th>
+                        </tr>
+                        <tr>
+                            <td colspan="2">{{ form.contacts|class:'form-control' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Фотографии</th>
+                            <th></th>
+                        </tr>
+                        {{ formset.management_form }}
+                        {% for form in formset %}
+                            <tr class="image-formset">
+                                {% for hidden in form.hidden_fields %}
+                                    {{ hidden }}
+                                {% endfor %}
+                                <td>{{ form.image|class:'form-control imgInp' }}</td>
+                                <td>{{ form.DELETE }}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+                <div class="col-12 text-right">
+                    <button type="submit" class="btn btn-success px-5">Сохранить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'jquery/jquery.formset.min.js' %}"></script>
+    <script type="text/javascript">
+        $('.image-formset').formset({
+            addText: 'Добавить фото',
+            deleteText: 'Удалить',
+            addCssClass: 'btn btn-info',
+            deleteCssClass: 'btn btn-danger',
+            prefix: 'images',
+            added: img_change_event,
+        });
+
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                let reader = new FileReader();
+                let inputId = $(input).attr("id");
+                let img_prev_id = inputId + 'prev';
+                reader.onload = function (e) {
+                    if ($('#' + img_prev_id).length > 0) {
+                        $('#' + img_prev_id).attr('src', e.target.result);
+                    } else {
+                        let img = $(`<img id='${img_prev_id}' class='p-2' style='width: 18rem; height: 12rem; object-fit: cover; position: center'>`);
+                        img.attr('src', e.target.result);
+                        $(input).parent().append(img);
+                    }
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $(".imgInp").change(function () {
+            readURL(this);
+        });
+
+        function img_change_event() {
+            $(".imgInp").change(function () {
+                readURL(this);
+            });
+        }
+    </script>
+{% endblock %}

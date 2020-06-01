@@ -1,0 +1,125 @@
+{% extends 'management/layout.html' %}
+
+{% load common_tags %}
+
+{% block breadcrumbs %}
+    <div class="text-middle text-secondary">Модели</div>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-8">
+            {% if filter_form %}
+                <div class="row mb-3">
+                    <div class="col-12">
+                        <form action="" method="get">
+                            <div class="input-group">
+                                {{ filter_form.name|class:'form-control' }}
+                                <div class="input-group-append">
+                                    <span class="input-group-text p-0"><button class="btn" type="submit">Поиск</button></span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            {% endif %}
+            {% if models_list and models_list|length > 0 %}
+                <table class="table stable-responsive">
+                    <thead>
+                    <tr>
+                        <th>{% verbose_name models_list.0 'name' %}</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for model in models_list %}
+                        <tr>
+                            {% if request.user.is_superuser or request.user.is_staff or request.user.supmodel %}
+                                {% if model.images.all %}
+                                    <td class="py-1"><a href="{% url 'management:cammodel:detail' model.id %}"><img src="{{ model.images.all.0.image.url }}" style="width: 4rem; height: 4rem; border-radius: 2rem; overflow: hidden; object-fit: cover; position: center"></a></td>
+                                {% else %}
+                                    <td class="py-1">
+                                        <svg style="width: 4rem; height: 4rem; border-radius: 2rem; overflow: hidden;" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M1523 1339q-22-155-87.5-257.5t-184.5-118.5q-67 74-159.5 115.5t-195.5 41.5-195.5-41.5-159.5-115.5q-119
+                                                     16-184.5 118.5t-87.5 257.5q106 150 271 237.5t356 87.5 356-87.5 271-237.5zm-243-699q0-159-112.5-271.5t-271.5-112.5-271.5
+                                                     112.5-112.5 271.5 112.5 271.5 271.5 112.5 271.5-112.5 112.5-271.5zm512 256q0 182-71 347.5t-190.5 286-285.5 191.5-349
+                                                     71q-182 0-348-71t-286-191-191-286-71-348 71-348 191-286 286-191 348-71 348 71 286 191 191 286 71 348z" fill="#555"></path>
+                                        </svg>
+                                    </td>
+                                {% endif %}
+                                <td class="col align-middle"><a class="text-info" href="{% url 'management:cammodel:detail' model.id %}?{{ request.GET.urlencode }}">{{ model.name }}</a></td>
+                            {% endif %}
+                            {% if request.user.is_superuser or request.user.is_staff %}
+                                <td class="col align-middle"><a class="btn {% if model.filled_today %}btn-secondary{% else %}btn-warning{% endif %}" href="{% url 'management:accounting:createfromcammodel' model.id %}">Ввести Итог</a></td>
+                            {% endif %}
+                            {% if request.user.is_superuser %}
+                                <td class="col align-middle"><a class="btn btn-success" href="{% url 'management:cammodel:edit' model.id %}?{{ request.GET.urlencode }}">Редактировать</a></td>
+                                <td class="align-middle"><a class="btn btn-danger" href="{% url 'management:cammodel:remove' model.id %}?{{ request.GET.urlencode }}">Удалить</a></td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                {% if models_list.paginator.num_pages > 1 %}
+                    <div class="col-12 mt-3 mb-5 px-0">
+                        <ul class="pagination">
+                            {% if models_list.has_previous %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page=1">&laquo;</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ models_list.previous_page_number }}">Назад</a>
+                                </li>
+                            {% else %}
+                                <li class="page-item disabled">
+                                    <a class="page-link">&laquo;</a>
+                                </li>
+                                <li class="page-item disabled">
+                                    <a class="page-link">Назад</a>
+                                </li>
+                            {% endif %}
+                            {% for i in page_range %}
+                                {% ifequal i models_list.number %}
+                                    <li class="page-item active">
+                                        <span class="page-link">{{ i }}</span>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                                    </li>
+                                {% endifequal %}
+                            {% endfor %}
+                            {% if models_list.has_next %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ models_list.next_page_number }}">Далее</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ models_list.paginator.num_pages }}">&raquo;</a>
+                                </li>
+                            {% else %}
+                                <li class="page-item disabled">
+                                    <a class="page-link">Далее</a>
+                                </li>
+                                <li class="page-item disabled">
+                                    <a class="page-link">&raquo;</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                {% endif %}
+            {% endif %}
+        </div>
+        <div class="col-md-4">
+            <div class="container">
+                {% if request.user.is_superuser or request.user.is_staff or request.user.supmodel  %}
+                    <a href="{% url 'management:cammodel:create' %}"
+                       class="btn btn-info btn-flat btn-block">Добавить &nbsp;Модель
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

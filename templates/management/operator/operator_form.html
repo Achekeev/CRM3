@@ -1,0 +1,123 @@
+{% extends 'management/layout.html' %}
+
+{% load common_tags static %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/gijgo.min.css' %}">
+{% endblock %}
+
+{% block breadcrumbs %}
+    <div><a class="active" href="{% url 'management:operator:index' %}">Операторы</a></div>
+    <div>&nbsp;&nbsp;>&nbsp;&nbsp;</div>
+    <div class="text-middle text-secondary">Создание / Изменение Оператора</div>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <form method="post" enctype="multipart/form-data">{% csrf_token %}
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>{{ form.name.label }}</th>
+                        <th>{{ form.birthday.label }}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>{{ form.name|class:'form-control' }}</td>
+                        <td>{{ form.birthday|class:'datepicker' }}</td>
+                    </tr>
+                    <tr>
+                        <th>{{ form.work_place.label }}</th>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <td colspan="2">{{ form.work_place|class:'form-control' }}</td>
+                    </tr>
+                    <tr>
+                        <th>{{ form.cammodel.label }}</th>
+                        <th>{{ form.percent.label }}</th>
+                    </tr>
+                    <tr>
+                        <td>{{ form.cammodel|class:'selectize' }}</td>
+                        <td>{{ form.percent|class:'form-control' }}</td>
+                    </tr>
+                    <tr>
+                        <th>{{ form.passport_scan.label }}</th>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <td>{{ form.passport_scan|class:'form-control imgInp' }}</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th>{{ form.image.label }}</th>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <td>{{ form.image|class:'form-control imgInp' }}</td>
+                        <td></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="row justify-content-end">
+                    {% if request.user.is_superuser and form.instance.pk %}
+                        <div class="col-2">
+                            <a class="btn btn-danger btn-block" href="{% url 'management:operator:remove' form.instance.id %}">Удалить</a>
+                        </div>
+                    {% endif %}
+                    <div class="col-3">
+                        <button type="submit" class="btn btn-info btn-block float-right">Сохранить</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'js/gijgo.min.js' %}"></script>
+    <script src="{% static 'js/messages.ru-ru.js' %}"></script>
+    <script>
+        $('.selectize').selectize();
+        $('.datepicker').each(function (index) {
+            $(this).attr('autocomplete', 'off');
+            $(this).datepicker({
+                uiLibrary: 'bootstrap4',
+                format: 'yyyy-mm-dd',
+                locale: 'ru-ru',
+                showRightIcon: false,
+                header: true,
+            });
+        });
+
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                let reader = new FileReader();
+                let inputId = $(input).attr("id");
+                let img_prev_id = inputId + 'prev';
+                reader.onload = function (e) {
+                    if ($('#' + img_prev_id).length > 0) {
+                        $('#' + img_prev_id).attr('src', e.target.result);
+                    } else {
+                        let img = $(`<img id='${img_prev_id}' class='p-2' style='width: 18rem; height: 12rem; object-fit: cover; position: center'>`);
+                        img.attr('src', e.target.result);
+                        $(input).parent().append(img);
+                    }
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $(".imgInp").change(function () {
+            readURL(this);
+        });
+
+        function img_change_event() {
+            $(".imgInp").change(function () {
+                readURL(this);
+            });
+        }
+    </script>
+{% endblock %}

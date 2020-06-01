@@ -1,0 +1,92 @@
+{% extends 'management/layout.html' %}
+
+{% load static common_tags %}
+
+{% block breadcrumbs %}
+    <div><a class="active" href="{% url 'management:cammodel:index' %}">Модели</a></div>
+    <div>&nbsp;&nbsp;>&nbsp;&nbsp;</div>
+    <div class="text-middle text-secondary">Создание Модели</div>
+{% endblock %}
+
+{% block content %}
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <table class="table">
+            <thead>
+            <tr>
+                <th>{{ form.name.label }}</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td colspan="2">{{ form.name|class:'form-control' }}</td>
+            </tr>
+            <tr>
+                <th>{{ form.description.label }}</th>
+                <th>{{ form.schedule.label }}</th>
+            </tr>
+            <tr>
+                <td>{{ form.description|class:'form-control' }}</td>
+                <td>{{ form.schedule|class:'form-control' }}</td>
+            </tr>
+            <tr>
+                <th>{{ form.phone.label }}</th>
+                <th>{{ form.email.label }}</th>
+            </tr>
+            <tr>
+                <td>{{ form.phone|class:'form-control' }}</td>
+                <td>{{ form.email|class:'form-control' }}</td>
+            </tr>
+            <tr>
+                <th>{{ form.contacts.label }}</th>
+                <th></th>
+            </tr>
+            <tr>
+                <td colspan="2">{{ form.contacts|class:'form-control' }}</td>
+            </tr>
+            <tr>
+                <th>{{ form.login.label }}</th>
+                <th>{{ form.password.label }}</th>
+            </tr>
+            <tr>
+                <td>{{ form.login|class:'form-control' }}</td>
+                <td>{{ form.password|class:'form-control' }}</td>
+            </tr>
+            <tr>
+                <th>{{ form.passport_scan.label }}</th>
+                <th></th>
+            </tr>
+            <tr>
+                {% if form.instance.passport_scan %}
+                    <td><a href="{{ form.instance.passport_scan.url }}" target="_blank"><img style="width: 18rem; height: 12rem; object-fit: cover" src="{{ form.instance.passport_scan.url }}" alt=""></a></td>
+                {% endif %}
+                <td></td>
+            </tr>
+            <tr>
+                <th>Фотографии</th>
+                <th></th>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <div class="row">
+                        {% for form in formset %}
+                            {% if form.instance.image %}
+                                <div class="col-6 col-lg-4 mb-2">
+                                    <a href="{{ form.instance.image.url }}" target="_blank"><img style="width: 100%; height: 12rem; object-fit: cover" src="{{ form.instance.image.url }}" alt=""></a>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="row my-5">
+            <div class="col-md-9"></div>
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-block btn-info">Сохранить</button>
+            </div>
+        </div>
+    </form>
+{% endblock %}

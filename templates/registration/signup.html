@@ -1,0 +1,52 @@
+{% extends 'layout.html' %}
+
+{% load common_tags %}
+
+{% block navbar %}{% endblock %}
+
+{% block content %}
+    <div class="container" style="min-height: 100vh">
+        <div class="row justify-content-center align-items-center" style="min-height: 100vh">
+            <div class="col-md-5">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="w-100 dark-grey-text font-weight-bold text-center"><strong>Регистрация</strong></h3>
+                        <a href="{% url 'common:index' %}" class="text-right d-flex justify-content-center my-3 pt-1">
+                            На главную</a>
+                        <form method="post" action="{% url 'authentication:signup' %}" accept-charset="utf-8">{% csrf_token %}
+                            {% if form.errors.values %}
+                                <div class="alert alert-danger">
+                                    {% for list in form.errors.values %}
+                                        <ul>
+                                            {% for error in list %}
+                                                <li>{{ error }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            <div class="form-group">
+                                <label data-error="wrong" data-success="right" for="id_email"></label>
+                                <input name="email" id="id_email" class="form-control validate"
+                                       placeholder="Введите Ваш email...">
+                                <label data-error="wrong" data-success="right" for="id_password1"></label><br>
+                                <input type="password" name="password1" id="id_password1" class="form-control validate"
+                                       placeholder="Введите пароль...">
+                                <label data-error="wrong" data-success="right" for="id_password2"></label><br>
+                                <input type="password" name="password2" id="id_password2" class="form-control validate"
+                                       placeholder="Повторите пароль...">
+                            </div>
+                            <div class="text-center mb-1">
+                                <button type="submit" class="btn btn-primary btn-block btn-rounded">Зарегистрироваться</button>
+                            </div>
+                        </form>
+                        <a href="{% url 'authentication:login' %}" class="text-right d-flex justify-content-center my-3 pt-1">
+                            Уже есть аккаунт?</a>
+                    </div>
+                </div>
+                <p class="text-center mt-3">Copyright &copy; MadCourses {% now 'Y' %}</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block footer %}{% endblock %}

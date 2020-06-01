@@ -1,0 +1,87 @@
+{% extends 'management/layout.html' %}
+
+{% load common_tags static %}
+
+{% block breadcrumbs %}
+    <div><a class="active" href="{% url 'management:accounting:index' %}">Статистика</a></div>
+    <div>&nbsp;&nbsp;>&nbsp;&nbsp;</div>
+    <div class="text-middle text-secondary">Создание / Изменение Итого</div>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-10">
+            <form method="post" enctype="multipart/form-data">{% csrf_token %}
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Имя Модели</th>
+                        <th>Имя Оператора</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>{{ cammodel.name }}</td>
+                        <td>{{ cammodel.operator.name }}</td>
+                    </tr>
+                    <tr>
+                        <th>Доля Модели</th>
+                        <th>Доля Оператора</th>
+                    </tr>
+                    <tr>
+                        <td id="model_amount"></td>
+                        <td id="operator_amount"></td>
+                    </tr>
+                    <tr>
+                        <th>{{ form.total.label }}</th>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <td>{{ form.total|class:'form-control' }}</td>
+                        <td></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="row justify-content-end">
+                    {% if request.user.is_superuser or request.user.is_staff %}
+                        <div class="col-3">
+                            <button type="submit" class="btn btn-info btn-block float-right">Сохранить</button>
+                        </div>
+                    {% endif %}
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        $('#id_total').val('');
+        $('#id_total').on('input | paste', function (e) {
+            let model_percent = {% if cammodel.percent %}{{ cammodel.percent }}{% else %}25{% endif %};
+            let operator_percent = null;
+            {% if cammodel.operator %}
+                operator_percent = {% if cammodel.operator.percent %}{{ cammodel.operator.percent }}{% else %}25{% endif %};
+            {% endif %}
+            let total = $(this).val();
+            if (total >= 1000) {
+                model_percent += 5;
+                if (operator_percent) {
+                    operator_percent += 5;
+                }
+            }
+            if (total >= 2000) {
+                model_percent += 5;
+                if (operator_percent) {
+                    operator_percent += 5;
+                }
+            }
+            let model_amount = total / 100 * model_percent;
+            $('#model_amount').html(model_amount.toFixed(0));
+            if (operator_percent) {
+                let operator_amount = total / 100 * operator_percent;
+                $('#operator_amount').html(operator_amount.toFixed(0));
+            }
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,116 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/x-icon" href="/static/img/favicon.jpg"/>
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style-sidebar.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/custom-scrollbar.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/selectize.min.css' %}">
+    {% block styles %}{% endblock %}
+    <title>Grusha Studio</title>
+</head>
+<body>
+<style>
+    {#    custom styles here #}
+</style>
+<!-- Side Bar -->
+<div class="wrapper">
+    <!-- Sidebar  -->
+    <nav id="sidebar">
+        <div class="sidebar-header">
+            <a class="navbar-brand" href="{% url 'common:index' %}">
+                <p><strong class="text-warning h3 font-weight-bold">Grusha</strong><strong class="text-light h3 font-weight-bold">St.</strong></p></a>
+            {#            <h4 class="text-truncate"><a href="{% url 'profile:index' %}">{% firstof user.first_name user.email %}</a></h4>#}
+            <p><i></i></p>
+        </div>
+        <ul class="list-unstyled components">
+            <li><a class="pl-3" href="{% url 'common:index' %}">Главная</a></li>
+            {% if request.user.is_superuser or request.user.is_staff or request.user.supmodel %}
+                <li><a class="pl-3" href="{% url 'management:cammodel:index' %}">Модели</a></li>
+            {% endif %}
+            {% if request.user.is_superuser %}
+                <li><a class="pl-3" href="{% url 'management:supcammodel:index' %}">Суп Модели</a></li>
+            {% endif %}
+            {% if request.user.is_superuser or request.user.is_staff or request.user.supmodel %}
+                <li><a class="pl-3" href="{% url 'management:cammodelrequest:index' %}">Заявки</a></li>
+            {% endif %}
+            {% if request.user.is_superuser or request.user.is_staff %}
+                <li><a class="pl-3" href="{% url 'management:operator:index' %}">Операторы</a></li>
+            {% endif %}
+            {% if request.user.is_superuser %}
+                <li><a class="pl-3" href="{% url 'management:supoperator:index' %}">Суп Операторы</a></li>
+            {% endif %}
+            {% if request.user.is_superuser or request.user.is_staff %}
+                <li><a class="pl-3" href="{% url 'management:accounting:index' %}">Итоги</a></li>
+            {% endif %}
+            {#<li>#}
+            {#    <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Apps</a>#}
+            {#    <ul class="collapse list-unstyled" id="pageSubmenu">#}
+            {#        <li><a href="{% url 'management:vocabulary:index' %}">Vocabulary</a></li>#}
+            {#        <li><a href="#">Page 2</a></li>#}
+            {#        <li><a href="#">Page 3</a></li>#}
+            {#    </ul>#}
+            {#</li>#}
+        </ul>
+    </nav>
+</div>
+<!-- Page Content -->
+<div id="content">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <button type="button" id="sidebarCollapse" class="btn btn-info mr-2" style="width: 48px; height: 48px">
+                <img style="width: 160%; margin-left: -30%" alt="" src="{% static 'fontawesome-svg/navicon.svg' %}"/>
+            </button>
+            {% block breadcrumbs %}{% endblock %}
+            <div class="nav navbar-nav ml-auto">
+                {% block links %}{% endblock %}
+                <div class="btn p-0" style="position: relative">
+                    <button type="button" class="btn btn-warning dropdown-toggle px-5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {% firstof request.user.first_name request.user.username %}&nbsp;&nbsp;&nbsp;&nbsp;
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a class="dropdown-item" href="{% url 'authentication:password_change' %}">Изменить пароль</a>
+                        {% if request.user.is_superuser %}
+                            <a class="dropdown-item" href="/admin/">Админка</a>
+                        {% endif %}
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{% url 'authentication:logout' %}">Выйти</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="container-fluid">
+        <br>
+        {% block content %}{% endblock %}
+        <div class="row mt-2 bg-light">
+            <div class="col-md-12 "></div>
+        </div>
+    </div>
+</div>
+<script src="{% static 'jquery/jquery.min.js' %}"></script>
+<script src="{% static 'jquery/jquery.formset.min.js' %}"></script>
+<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/custom-scrollbar.min.js' %}"></script>
+<script src="{% static 'js/selectize.min.js' %}"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#sidebar").mCustomScrollbar({
+            theme: "minimal"
+        });
+
+        $('#sidebarCollapse').on('click', function () {
+            $('#sidebar, #content').toggleClass('active');
+            $('.collapse.in').toggleClass('in');
+            $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+        });
+    });
+</script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

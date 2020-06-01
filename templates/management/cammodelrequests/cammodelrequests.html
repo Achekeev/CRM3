@@ -1,0 +1,98 @@
+{% extends 'management/layout.html' %}
+
+{% load common_tags %}
+
+{% block breadcrumbs %}
+    <div class="text-middle text-secondary">Заявки</div>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            {% if requests and requests|length > 0 %}
+                <table class="table stable-responsive">
+                    <thead>
+                    <tr>
+                        <th>{% verbose_name requests.0 'name' %}</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for model_request in requests %}
+                        <tr>
+                            {% if request.user.is_superuser or request.user.is_staff or request.user.supmodel %}
+                                {% if model_request.images.all %}
+                                    <td class="py-1"><a href="{% url 'management:cammodelrequest:detail' model_request.id %}"><img src="{{ model_request.images.all.0.image.url }}" style="width: 4rem; height: 4rem; border-radius: 2rem; overflow: hidden; object-fit: cover; position: center"></a></td>
+                                {% else %}
+                                    <td class="py-1">
+                                        <svg style="width: 4rem; height: 4rem; border-radius: 2rem; overflow: hidden;" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M1523 1339q-22-155-87.5-257.5t-184.5-118.5q-67 74-159.5 115.5t-195.5 41.5-195.5-41.5-159.5-115.5q-119
+                                                     16-184.5 118.5t-87.5 257.5q106 150 271 237.5t356 87.5 356-87.5 271-237.5zm-243-699q0-159-112.5-271.5t-271.5-112.5-271.5
+                                                     112.5-112.5 271.5 112.5 271.5 271.5 112.5 271.5-112.5 112.5-271.5zm512 256q0 182-71 347.5t-190.5 286-285.5 191.5-349
+                                                     71q-182 0-348-71t-286-191-191-286-71-348 71-348 191-286 286-191 348-71 348 71 286 191 191 286 71 348z" fill="#555"></path>
+                                        </svg>
+                                    </td>
+                                {% endif %}
+                                <td class="col align-middle"><a class="text-info" href="{% url 'management:cammodelrequest:detail' model_request.id %}?{{ request.GET.urlencode }}">{{ model_request.name }}</a></td>
+                            {% endif %}
+                            {% if request.user.is_superuser %}
+                                <td class="align-middle"><a class="btn btn-danger" href="{% url 'management:cammodelrequest:remove' model_request.id %}?{{ request.GET.urlencode }}">Удалить</a></td>
+                                <td></td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                {% if requests.paginator.num_pages > 1 %}
+                    <div class="col-12 mt-3 mb-5 px-0">
+                        <ul class="pagination">
+                            {% if requests.has_previous %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page=1">&laquo;</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ requests.previous_page_number }}">Назад</a>
+                                </li>
+                            {% else %}
+                                <li class="page-item disabled">
+                                    <a class="page-link">&laquo;</a>
+                                </li>
+                                <li class="page-item disabled">
+                                    <a class="page-link">Назад</a>
+                                </li>
+                            {% endif %}
+                            {% for i in page_range %}
+                                {% ifequal i requests.number %}
+                                    <li class="page-item active">
+                                        <span class="page-link">{{ i }}</span>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                                    </li>
+                                {% endifequal %}
+                            {% endfor %}
+                            {% if requests.has_next %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ requests.next_page_number }}">Далее</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ requests.paginator.num_pages }}">&raquo;</a>
+                                </li>
+                            {% else %}
+                                <li class="page-item disabled">
+                                    <a class="page-link">Далее</a>
+                                </li>
+                                <li class="page-item disabled">
+                                    <a class="page-link">&raquo;</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
