@@ -13,6 +13,13 @@ import uuid
 class Index(View):
     def get(self, request):
         # form = ProfileCreationForm()
+        return redirect('authentication:login')
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class Main(View):
+    def get(self, request):
+        # form = ProfileCreationForm()
         return render(request, 'index.html')
 
     # def post(self, request):

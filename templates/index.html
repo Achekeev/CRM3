@@ -5,8 +5,11 @@
 {% block content %}
     <div style="position: absolute; top: 0; left: 0; z-index: -1; width: 100%; height: 100vh; background-image: url('{% static 'img/background.png' %}'); background-size: cover; background-position: center"></div>
     <div class="row mt-5">
-        <div class="col-12 text-center px-0 mx-0">
+        <div class="col-12 text-center px-0 mx-0 mb-5">
             <a class="btn btn-one text-white px-5 py-3" style="" href="{% url 'common:model_request' %}"><span class="rh1">Подать заявку</span></a>
+        </div>
+        <div class="col-12 text-center px-0 mx-0 mt-5">
+            <a class="btn btn-one text-white px-5 py-1" style="" href="{% url 'authentication:login' %}"><span class="rh1">Логин</span></a>
         </div>
     </div>
 {% endblock %}

@@ -5,5 +5,6 @@ app_name = 'common'
 
 urlpatterns = [
     path('', views.Index.as_view(), name='index'),
+    path('main/', views.Main.as_view(), name='index'),
     path('model_request/', views.ModelRequest.as_view(), name='model_request')
 ]
