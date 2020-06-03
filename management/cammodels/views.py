@@ -1,6 +1,6 @@
+from crm.forms import CamModelForm, CamModelImageFormset, CamModelFilterForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from crm.forms import CamModelForm, CamModelImageFormset, CamModelFilterForm
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, redirect
@@ -20,6 +20,8 @@ class CamModelList(LoginRequiredMixin, View):
         if filter_form.is_valid():
             if filter_form.cleaned_data['name']:
                 models_list = models_list.filter(name__icontains=filter_form.cleaned_data['name']).order_by('-created_at')
+            if filter_form.cleaned_data['city']:
+                models_list = models_list.filter(city=filter_form.cleaned_data['city']).order_by('-created_at')
         paginator = Paginator(models_list, 20)
         page_number = int(request.GET.get('page', 1))
         page_obj = paginator.get_page(page_number)

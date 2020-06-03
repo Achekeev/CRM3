@@ -30,10 +30,11 @@
                     </tr>
                     <tr>
                         <th>{{ form.work_place.label }}</th>
-                        <th></th>
+                        <th>{{ form.city.label }}</th>
                     </tr>
                     <tr>
-                        <td colspan="2">{{ form.work_place|class:'form-control' }}</td>
+                        <td>{{ form.work_place|class:'form-control' }}</td>
+                        <td>{{ form.city|class:'selectize' }}</td>
                     </tr>
                     <tr>
                         <th>{{ form.cammodel.label }}</th>
@@ -67,9 +68,11 @@
                             <a class="btn btn-danger btn-block" href="{% url 'management:operator:remove' form.instance.id %}">Удалить</a>
                         </div>
                     {% endif %}
-                    <div class="col-3">
-                        <button type="submit" class="btn btn-info btn-block float-right">Сохранить</button>
-                    </div>
+                    {% if request.user.is_superuser or request.user.is_staff %}
+                        <div class="col-3">
+                            <button type="submit" class="btn btn-info btn-block float-right">Сохранить</button>
+                        </div>
+                    {% endif %}
                 </div>
             </form>
         </div>

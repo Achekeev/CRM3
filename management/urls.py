@@ -5,6 +5,8 @@ from .accounting import urls as accounting_urls
 from .cammodels import urls as cammodel_urls
 from .operators import urls as operator_urls
 from django.urls import path, include
+from .pairs import urls as pair_urls
+from .city import urls as city_urls
 from . import views
 
 app_name = 'management'
@@ -17,4 +19,6 @@ urlpatterns = [
     path('operator/', include(operator_urls, namespace='operator')),
     path('supoperator/', include(supoperator_urls, namespace='supoperator')),
     path('accounting/', include(accounting_urls, namespace='accounting')),
+    path('city/', include(city_urls, namespace='city')),
+    path('pair/', include(pair_urls, namespace='pair')),
 ]

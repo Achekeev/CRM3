@@ -1,0 +1,41 @@
+{% extends 'management/layout.html' %}
+
+{% load static common_tags %}
+
+{% block breadcrumbs %}
+    <div><a class="active" href="{% url 'management:pair:index' %}">Пары</a></div>
+    <div>&nbsp;&nbsp;>&nbsp;&nbsp;</div>
+    <div class="text-middle text-secondary">Создание / Изменение Пары</div>
+{% endblock %}
+
+{% block content %}
+    <form method="post">{% csrf_token %}
+        <div class="col-md-8">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>{{ form.cammodel.label }}</th>
+                    <th>{{ form.operator.label }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>{{ form.cammodel|class:'selectize' }}</td>
+                    <td>{{ form.operator|class:'selectize' }}</td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="row my-5 justify-content-end">
+                <div class="col-md-6">
+                    <button type="submit" class="btn btn-block btn-info">Сохранить</button>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        $('.selectize').selectize();
+    </script>
+{% endblock %}

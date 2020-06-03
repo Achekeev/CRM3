@@ -7,27 +7,40 @@
 {% endblock %}
 
 {% block content %}
-    <div class="row">
-        <div class="col-md-8">
+    <div class="row mb-2">
+        <div class="col-8">
             {% if filter_form %}
-                <div class="row mb-3">
-                    <div class="col-12">
-                        <form action="" method="get">
-                            <div class="input-group">
-                                {{ filter_form.name|class:'form-control' }}
-                                <div class="input-group-append">
-                                    <span class="input-group-text p-0"><button class="btn" type="submit">Поиск</button></span>
-                                </div>
-                            </div>
-                        </form>
+                <form action="" method="get">
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            {{ filter_form.city|class:'selectize' }}
+                        </div>
+                        <div class="col-md-7">
+                            {{ filter_form.name|class:'form-control' }}
+                        </div>
+                        <div class="col-md-1">
+                            <button class="btn btn-info" type="submit">Поиск</button>
+                        </div>
                     </div>
-                </div>
+                </form>
             {% endif %}
+        </div>
+        <div class="col-md-4">
+            {% if request.user.is_superuser or request.user.is_staff or request.user.supmodel %}
+                <a href="{% url 'management:cammodel:create' %}"
+                   class="btn btn-success btn-block">Добавить &nbsp;Модель
+                </a>
+            {% endif %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
             {% if models_list and models_list|length > 0 %}
                 <table class="table stable-responsive">
                     <thead>
                     <tr>
                         <th>{% verbose_name models_list.0 'name' %}</th>
+                        <th></th>
                         <th></th>
                         <th></th>
                         <th></th>
@@ -39,7 +52,9 @@
                         <tr>
                             {% if request.user.is_superuser or request.user.is_staff or request.user.supmodel %}
                                 {% if model.images.all %}
-                                    <td class="py-1"><a href="{% url 'management:cammodel:detail' model.id %}"><img src="{{ model.images.all.0.image.url }}" style="width: 4rem; height: 4rem; border-radius: 2rem; overflow: hidden; object-fit: cover; position: center"></a></td>
+                                    <td class="py-1"><a href="{% url 'management:cammodel:detail' model.id %}"><img src="{{ model.images.all.0.image.url }}"
+                                                                                                                    style="width: 4rem; height: 4rem; border-radius: 2rem; overflow: hidden; object-fit: cover; position: center"></a>
+                                    </td>
                                 {% else %}
                                     <td class="py-1">
                                         <svg style="width: 4rem; height: 4rem; border-radius: 2rem; overflow: hidden;" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg">
@@ -51,13 +66,24 @@
                                     </td>
                                 {% endif %}
                                 <td class="col align-middle"><a class="text-info" href="{% url 'management:cammodel:detail' model.id %}?{{ request.GET.urlencode }}">{{ model.name }}</a></td>
-                            {% endif %}
-                            {% if request.user.is_superuser or request.user.is_staff %}
-                                <td class="col align-middle"><a class="btn {% if model.filled_today %}btn-secondary{% else %}btn-warning{% endif %}" href="{% url 'management:accounting:createfromcammodel' model.id %}">Ввести Итог</a></td>
-                            {% endif %}
-                            {% if request.user.is_superuser %}
-                                <td class="col align-middle"><a class="btn btn-success" href="{% url 'management:cammodel:edit' model.id %}?{{ request.GET.urlencode }}">Редактировать</a></td>
-                                <td class="align-middle"><a class="btn btn-danger" href="{% url 'management:cammodel:remove' model.id %}?{{ request.GET.urlencode }}">Удалить</a></td>
+                                {% if request.user.is_superuser or request.user.is_staff %}
+                                    <td class="col align-middle"><a class="btn btn-info" href="{% url 'management:accounting:modelstatistics' model.id %}">Статистика</a></td>
+                                    <td class="col align-middle"><a class="btn {% if model.filled_today %}btn-secondary{% else %}btn-warning{% endif %}"
+                                                                    href="{% url 'management:accounting:createfromcammodel' model.id %}">Ввести Итог</a></td>
+                                {% else %}
+                                    <td></td>
+                                    <td></td>
+                                {% endif %}
+                                {% if request.user.is_superuser or request.user.supmodel %}
+                                    <td class="col align-middle"><a class="btn btn-success" href="{% url 'management:cammodel:edit' model.id %}?{{ request.GET.urlencode }}">Редактировать</a></td>
+                                {% else %}
+                                    <td></td>
+                                {% endif %}
+                                {% if request.user.is_superuser %}
+                                    <td class="align-middle"><a class="btn btn-danger" href="{% url 'management:cammodel:remove' model.id %}?{{ request.GET.urlencode }}">Удалить</a></td>
+                                {% else %}
+                                    <td></td>
+                                {% endif %}
                             {% endif %}
                         </tr>
                     {% endfor %}
@@ -112,14 +138,11 @@
                 {% endif %}
             {% endif %}
         </div>
-        <div class="col-md-4">
-            <div class="container">
-                {% if request.user.is_superuser or request.user.is_staff or request.user.supmodel  %}
-                    <a href="{% url 'management:cammodel:create' %}"
-                       class="btn btn-info btn-flat btn-block">Добавить &nbsp;Модель
-                    </a>
-                {% endif %}
-            </div>
-        </div>
     </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        $('.selectize').selectize();
+    </script>
 {% endblock %}

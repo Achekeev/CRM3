@@ -15,12 +15,13 @@
             <thead>
             <tr>
                 <th>{{ form.name.label }}</th>
-                <th></th>
+                <th>{{ form.city.label }}</th>
             </tr>
             </thead>
             <tbody>
             <tr>
-                <td colspan="2">{{ form.name|class:'form-control' }}</td>
+                <td>{{ form.name|class:'form-control' }}</td>
+                <td>{{ form.city|class:'selectize' }}</td>
             </tr>
             <tr>
                 <th>{{ form.description.label }}</th>
@@ -45,6 +46,14 @@
             <tr>
                 <td>{{ form.contacts|class:'form-control' }}</td>
                 <td>{{ form.percent|class:'form-control' }}</td>
+            </tr>
+            <tr>
+                <th>{{ form.website.label }}</th>
+                <th></th>
+            </tr>
+            <tr>
+                <td>{{ form.website|class:'form-control' }}</td>
+                <td></td>
             </tr>
             <tr>
                 <th>{{ form.login.label }}</th>

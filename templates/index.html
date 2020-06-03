@@ -8,8 +8,14 @@
         <div class="col-12 text-center px-0 mx-0 mb-5">
             <a class="btn btn-one text-white px-5 py-3" style="" href="{% url 'common:model_request' %}"><span class="rh1">Подать заявку</span></a>
         </div>
-        <div class="col-12 text-center px-0 mx-0 mt-5">
-            <a class="btn btn-one text-white px-5 py-1" style="" href="{% url 'authentication:login' %}"><span class="rh1">Логин</span></a>
-        </div>
+        {% if request.user.is_authenticated %}
+            <li class="col-12 text-center px-0 mx-0 mt-5">
+                <a class="btn btn-one text-white px-5 py-1" href="{% url 'management:index' %}"><span class="rh1">Менеджмент</span></a>
+            </li>
+        {% else %}
+            <div class="col-12 text-center px-0 mx-0 mt-5">
+                <a class="btn btn-one text-white px-5 py-1" style="" href="{% url 'authentication:login' %}"><span class="rh1">Логин</span></a>
+            </div>
+        {% endif %}
     </div>
 {% endblock %}

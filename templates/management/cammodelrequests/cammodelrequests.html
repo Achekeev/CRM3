@@ -16,7 +16,6 @@
                         <th>{% verbose_name requests.0 'name' %}</th>
                         <th></th>
                         <th></th>
-                        <th></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -36,10 +35,11 @@
                                     </td>
                                 {% endif %}
                                 <td class="col align-middle"><a class="text-info" href="{% url 'management:cammodelrequest:detail' model_request.id %}?{{ request.GET.urlencode }}">{{ model_request.name }}</a></td>
-                            {% endif %}
-                            {% if request.user.is_superuser %}
-                                <td class="align-middle"><a class="btn btn-danger" href="{% url 'management:cammodelrequest:remove' model_request.id %}?{{ request.GET.urlencode }}">Удалить</a></td>
-                                <td></td>
+                                {% if request.user.is_superuser %}
+                                    <td class="align-middle"><a class="btn btn-danger" href="{% url 'management:cammodelrequest:remove' model_request.id %}?{{ request.GET.urlencode }}">Удалить</a></td>
+                                {% else %}
+                                    <td></td>
+                                {% endif %}
                             {% endif %}
                         </tr>
                     {% endfor %}

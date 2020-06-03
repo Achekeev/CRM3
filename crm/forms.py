@@ -1,4 +1,4 @@
-from crm.models import CamModel, SupModel, Operator, SupOperator, CamModelImage, CamModelRequest, CamModelRequestImage, DailyTotal
+from crm.models import CamModel, SupModel, Operator, SupOperator, CamModelImage, CamModelRequest, CamModelRequestImage, DailyTotal, City
 from django.forms import inlineformset_factory
 from django import forms
 
@@ -20,6 +20,7 @@ CamModelImageFormset = inlineformset_factory(CamModel, CamModelImage, form=CamMo
 
 class CamModelFilterForm(forms.Form):
     name = forms.CharField(label='По Имени', max_length=255, required=False, widget=forms.TextInput({'placeholder': 'Поиск По Имени'}))
+    city = forms.ModelChoiceField(label='Город', queryset=City.objects.all(), required=False)
 
 
 class CamModelRequestForm(forms.ModelForm):
@@ -59,6 +60,7 @@ class OperatorForm(forms.ModelForm):
 
 class OperatorFilterForm(forms.Form):
     name = forms.CharField(label='По Имени', max_length=255, required=False, widget=forms.TextInput({'placeholder': 'Поиск По Имени'}))
+    city = forms.ModelChoiceField(label='Город', queryset=City.objects.all(), required=False)
 
 
 class SupOperatorForm(forms.ModelForm):
@@ -81,3 +83,14 @@ class AccountingFilterForm(forms.Form):
     name = forms.CharField(label='По Имени', max_length=255, required=False, widget=forms.TextInput({'placeholder': 'Поиск По Имени'}))
     date_from = forms.DateField(label='Дата с', required=False, widget=forms.TextInput({'placeholder': 'Дата с'}))
     date_to = forms.DateField(label='Дата по', required=False, widget=forms.TextInput({'placeholder': 'Дата по'}))
+
+
+class PairForm(forms.Form):
+    cammodel = forms.ModelChoiceField(label='Модель', queryset=CamModel.objects.all(), required=False)
+    operator = forms.ModelChoiceField(label='Оператор', queryset=Operator.objects.all(), required=False)
+
+
+class CityForm(forms.ModelForm):
+    class Meta:
+        model = City
+        exclude = ()

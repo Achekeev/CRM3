@@ -19,6 +19,8 @@ class OperatorList(LoginRequiredMixin, View):
         if filter_form.is_valid():
             if filter_form.cleaned_data['name']:
                 operators = operators.filter(name__icontains=filter_form.cleaned_data['name']).order_by('-created_at')
+            if filter_form.cleaned_data['city']:
+                operators = operators.filter(city=filter_form.cleaned_data['city']).order_by('-created_at')
         paginator = Paginator(operators, 20)
         page_number = int(request.GET.get('page', 1))
         page_obj = paginator.get_page(page_number)

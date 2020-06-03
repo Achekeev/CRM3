@@ -22,11 +22,11 @@ class AccountingList(LoginRequiredMixin, View):
         filter_form = AccountingFilterForm(request.GET or None)
         if filter_form.is_valid():
             if filter_form.cleaned_data['name']:
-                daily_totals = daily_totals.filter(Q(cammodel_name__icontains=filter_form.cleaned_data['name']) | Q(operator_name__icontains=filter_form.cleaned_data['name']))
+                daily_totals = daily_totals.filter(Q(cammodel_name__icontains=filter_form.cleaned_data['name']) | Q(operator_name__icontains=filter_form.cleaned_data['name'])).order_by('-created_at')
             if filter_form.cleaned_data['date_from']:
-                daily_totals = daily_totals.filter(created_at__date__gte=filter_form.cleaned_data['date_from'])
+                daily_totals = daily_totals.filter(created_at__date__gte=filter_form.cleaned_data['date_from']).order_by('-created_at')
             if filter_form.cleaned_data['date_to']:
-                daily_totals = daily_totals.filter(created_at__date__lte=filter_form.cleaned_data['date_to'])
+                daily_totals = daily_totals.filter(created_at__date__lte=filter_form.cleaned_data['date_to']).order_by('-created_at')
         paginator = Paginator(daily_totals, 20)
         page_number = int(request.GET.get('page', 1))
         page_obj = paginator.get_page(page_number)
@@ -42,7 +42,7 @@ class AccountingCamModelStatistics(LoginRequiredMixin, View):
     def get(self, request, pk=None):
         if pk:
             cammodel = CamModel.objects.get(id=pk)
-            cammodel_dict = {'cammodel_id': cammodel.id, 'cammodel_name': cammodel.name, 'total': 0}
+            cammodel_dict = {'cammodel_id': cammodel.id, 'cammodel_name': cammodel.name, 'amount': 0, 'total': 0}
             filter_form = AccountingFilterForm(request.GET or None)
             daily_totals = DailyTotal.objects.filter(cammodel_id=cammodel.id)
             if filter_form.is_valid():
@@ -52,15 +52,17 @@ class AccountingCamModelStatistics(LoginRequiredMixin, View):
                     daily_totals = daily_totals.filter(created_at__date__lte=filter_form.cleaned_data['date_to'])
             data_list = []
             for total in daily_totals:
-                cammodel_dict['total'] += total.cammodel_amount
+                cammodel_dict['total'] += total.total
+                cammodel_dict['amount'] += total.cammodel_amount
             for total in daily_totals:
                 for data in data_list:
                     if data['operator_id'] == total.operator_id:
-                        data['total'] += total.operator_amount
+                        data['total'] += total.total
+                        data['amount'] += total.operator_amount
                         break
                 else:
                     if total.operator_id:
-                        new_dict = {'operator_id': total.operator_id, 'operator_name': total.operator_name, 'total': total.operator_amount}
+                        new_dict = {'operator_id': total.operator_id, 'operator_name': total.operator_name, 'total': total.total, 'amount': total.operator_amount}
                         data_list.append(new_dict)
             return render(request, 'management/accounting/accounting_cammodel_statistics.html', {'data_list': data_list, 'cammodel_dict': cammodel_dict, 'filter_form': filter_form})
         else:
@@ -71,7 +73,7 @@ class AccountingOperatorStatistics(LoginRequiredMixin, View):
     def get(self, request, pk=None):
         if pk:
             operator = Operator.objects.get(id=pk)
-            operator_dict = {'operator_id': operator.id, 'operator_name': operator.name, 'total': 0}
+            operator_dict = {'operator_id': operator.id, 'operator_name': operator.name, 'amount': 0, 'total': 0}
             filter_form = AccountingFilterForm(request.GET or None)
             daily_totals = DailyTotal.objects.filter(operator_id=operator.id)
             if filter_form.is_valid():
@@ -81,15 +83,17 @@ class AccountingOperatorStatistics(LoginRequiredMixin, View):
                     daily_totals = daily_totals.filter(created_at__date__lte=filter_form.cleaned_data['date_to'])
             data_list = []
             for total in daily_totals:
-                operator_dict['total'] += total.operator_amount
+                operator_dict['amount'] += total.operator_amount
+                operator_dict['total'] += total.total
             for total in daily_totals:
                 for data in data_list:
-                    if data['operator_id'] == total.operator_id:
-                        data['total'] += total.operator_amount
+                    if data['cammodel_id'] == total.cammodel_id:
+                        data['amount'] += total.cammodel_amount
+                        data['total'] += total.total
                         break
                 else:
                     if total.cammodel_id:
-                        new_dict = {'cammodel_id': total.cammodel_id, 'cammodel_name': total.cammodel_name, 'total': total.cammodel_amount}
+                        new_dict = {'cammodel_id': total.cammodel_id, 'cammodel_name': total.cammodel_name, 'amount': total.cammodel_amount, 'total': total.total}
                         data_list.append(new_dict)
             return render(request, 'management/accounting/accounting_operator_statistics.html', {'data_list': data_list, 'operator_dict': operator_dict, 'filter_form': filter_form})
         else:
@@ -155,10 +159,19 @@ class AccountingOperatorForm(LoginRequiredMixin, View):
     def post(self, request, pk=None):
         form = DailyTotalForm(request.POST or None)
         if pk:
-            instance = DailyTotal.objects.get(id=pk)
-            form = DailyTotalForm(request.POST or None, instance=instance)
+            operator = Operator.objects.get(id=pk)
+            cammodel = operator.cammodel
+        else:
+            messages.error(request, f'Произошла ошибка. {form.errors}')
+            return render(request, 'management/accounting/accounting_form.html', {'form': form})
         if form.is_valid():
-            form.save()
+            instance = form.save(commit=False)
+            instance.cammodel_id = cammodel.id
+            instance.cammodel_name = cammodel.name
+            instance.operator_id = operator.id
+            instance.operator_name = operator.name
+            instance.calculate_rate()
+            instance.save()
             url = reverse('management:accounting:index')
             if request.GET:
                 url += '?' + request.GET.urlencode()

@@ -1,11 +1,11 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from crm.forms import SupOperatorForm, OperatorFilterForm
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import get_user_model
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
-from crm.forms import SupOperatorForm, OperatorFilterForm
 from crm.models import SupOperator
 from django.urls import reverse
 from django.views import View

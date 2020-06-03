@@ -31,26 +31,26 @@
                 <thead>
                 <tr>
                     <th>Имя Модели</th>
+                    <th>Доля</th>
                     <th>Итог</th>
-                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr>
                     <td>{{ cammodel_dict.cammodel_name }}</td>
+                    <td>{{ cammodel_dict.amount }}</td>
                     <td>{{ cammodel_dict.total }}</td>
-                    <td></td>
                 </tr>
                 <tr>
                     <th>Имя Оператора</th>
+                    <th>Доля</th>
                     <th>Итог</th>
-                    <th></th>
                 </tr>
                 {% for data in data_list %}
                     <tr>
                         <td>{{ data.operator_name }}</td>
+                        <td>{{ data.amount }}</td>
                         <td>{{ data.total }}</td>
-                        <td></td>
                     </tr>
                 {% endfor %}
                 </tbody>

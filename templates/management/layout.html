@@ -23,31 +23,25 @@
     <!-- Sidebar  -->
     <nav id="sidebar">
         <div class="sidebar-header">
-            <a class="navbar-brand" href="{% url 'common:index' %}">
-                <p><strong class="text-warning h3 font-weight-bold">Grusha</strong><strong class="text-light h3 font-weight-bold">St.</strong></p></a>
-            {#            <h4 class="text-truncate"><a href="{% url 'profile:index' %}">{% firstof user.first_name user.email %}</a></h4>#}
-            <p><i></i></p>
         </div>
         <ul class="list-unstyled components">
             <li><a class="pl-3" href="{% url 'common:index' %}">Главная</a></li>
             {% if request.user.is_superuser or request.user.is_staff or request.user.supmodel %}
                 <li><a class="pl-3" href="{% url 'management:cammodel:index' %}">Модели</a></li>
             {% endif %}
-            {% if request.user.is_superuser %}
-                <li><a class="pl-3" href="{% url 'management:supcammodel:index' %}">Суп Модели</a></li>
-            {% endif %}
-            {% if request.user.is_superuser or request.user.is_staff or request.user.supmodel %}
+            {% if request.user.is_superuser or request.user.supmodel %}
                 <li><a class="pl-3" href="{% url 'management:cammodelrequest:index' %}">Заявки</a></li>
             {% endif %}
             {% if request.user.is_superuser or request.user.is_staff %}
                 <li><a class="pl-3" href="{% url 'management:operator:index' %}">Операторы</a></li>
+                <li><a class="pl-3" href="{% url 'management:accounting:index' %}">Итоги</a></li>
+                <li><a class="pl-3" href="{% url 'management:pair:index' %}">Пары</a></li>
             {% endif %}
             {% if request.user.is_superuser %}
+                <li><a class="pl-3" href="{% url 'management:supcammodel:index' %}">Суп Модели</a></li>
                 <li><a class="pl-3" href="{% url 'management:supoperator:index' %}">Суп Операторы</a></li>
             {% endif %}
-            {% if request.user.is_superuser or request.user.is_staff %}
-                <li><a class="pl-3" href="{% url 'management:accounting:index' %}">Итоги</a></li>
-            {% endif %}
+            <li><a class="pl-3" href="{% url 'management:city:index' %}">Города</a></li>
             {#<li>#}
             {#    <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Apps</a>#}
             {#    <ul class="collapse list-unstyled" id="pageSubmenu">#}

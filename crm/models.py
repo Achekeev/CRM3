@@ -6,6 +6,13 @@ import os
 UserModel = get_user_model()
 
 
+class City(models.Model):
+    name = models.CharField('Город', max_length=255)
+
+    def __str__(self):
+        return self.name
+
+
 class CamModel(models.Model):
     name = models.CharField('ФИО', max_length=255)
     passport_scan = models.FileField('Скан паспорта', upload_to='model/passport/', blank=True, null=True)
@@ -14,9 +21,11 @@ class CamModel(models.Model):
     phone = models.CharField('Телефон', max_length=50, blank=True, null=True)
     email = models.CharField('Почта', max_length=255, blank=True, null=True)
     contacts = models.CharField('Доп. Контакты', max_length=255, blank=True, null=True)
+    website = models.CharField('Сайт', max_length=255, blank=True, null=True)
     login = models.CharField('Логин', max_length=255, blank=True, null=True)
     password = models.CharField('Пароль', max_length=255, blank=True, null=True)
     percent = models.PositiveSmallIntegerField('Процент', default=25, blank=True)
+    city = models.ForeignKey(City, verbose_name='Город', max_length=255, on_delete=models.SET_NULL, blank=True, null=True)
     created_at = models.DateTimeField('Дата создания', auto_now_add=True)
 
     def __str__(self):
@@ -80,7 +89,11 @@ class Operator(models.Model):
     work_place = models.CharField('Место работы', max_length=255, blank=True, null=True)
     percent = models.PositiveSmallIntegerField('Процент', default=25, blank=True)
     cammodel = models.OneToOneField(CamModel, on_delete=models.SET_NULL, verbose_name='Модель', blank=True, null=True)
+    city = models.ForeignKey(City, verbose_name='Город', max_length=255, on_delete=models.SET_NULL, blank=True, null=True)
     created_at = models.DateTimeField('Дата создания', auto_now_add=True)
+
+    def __str__(self):
+        return self.name
 
 
 class SupOperator(models.Model):

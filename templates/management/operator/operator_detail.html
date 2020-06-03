@@ -33,14 +33,16 @@
                         <td>{{ operator.percent }} %</td>
                     </tr>
                 {% endif %}
-                <tr>
-                    <th>Модель:</th>
-                    {% if operator.cammodel %}
-                        <td><a class="text-info" href="{% url 'management:cammodel:detail' operator.cammodel.id %}">{{ operator.cammodel }}</a></td>
-                    {% else %}
-                        <td></td>
-                    {% endif %}
-                </tr>
+                {% if request.user.is_superuser or request.user.is_staff %}
+                    <tr>
+                        <th>Модель:</th>
+                        {% if operator.cammodel %}
+                            <td><a class="text-info" href="{% url 'management:cammodel:detail' operator.cammodel.id %}">{{ operator.cammodel }}</a></td>
+                        {% else %}
+                            <td></td>
+                        {% endif %}
+                    </tr>
+                {% endif %}
                 <tr>
                     <th>Паспорт:</th>
                     {% if operator.passport_scan %}
@@ -61,18 +63,18 @@
             </table>
             <div class="row justify-content-end">
                 {% if request.user.is_superuser or request.user.is_staff %}
+                    <div class="col-md-2">
+                        <a class="btn btn-block btn-info mb-2" href="{% url 'management:accounting:operatorstatistics' operator.id %}">Статистика</a>
+                    </div>
                     <div class="col-2">
                         <a class="btn btn-block {% if operator.cammodel.filled_today %}btn-secondary{% else %}btn-warning{% endif %}"
                            href="{% url 'management:accounting:createfromoperator' operator.id %}">Ввести Итог</a>
                     </div>
-                {% endif %}
-                {% if request.user.is_superuser %}
-                    <div class="col-md-2">
-                        <a class="btn btn-block btn-info mb-2" href="{% url 'management:accounting:operatorstatistics' operator.id %}">Статистика</a>
-                    </div>
                     <div class="col-3">
                         <a href="{% url 'management:operator:edit' operator.id %}" class="btn btn-block btn-success">Редактировать</a>
                     </div>
+                {% endif %}
+                {% if request.user.is_superuser %}
                     <div class="col-2">
                         <a class="btn btn-danger btn-block" href="{% url 'management:operator:remove' operator.id %}">Удалить</a>
                     </div>
