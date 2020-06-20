@@ -48,22 +48,6 @@
                 <td>{{ form.percent|class:'form-control' }}</td>
             </tr>
             <tr>
-                <th>{{ form.website.label }}</th>
-                <th></th>
-            </tr>
-            <tr>
-                <td>{{ form.website|class:'form-control' }}</td>
-                <td></td>
-            </tr>
-            <tr>
-                <th>{{ form.login.label }}</th>
-                <th>{{ form.password.label }}</th>
-            </tr>
-            <tr>
-                <td>{{ form.login|class:'form-control' }}</td>
-                <td>{{ form.password|class:'form-control' }}</td>
-            </tr>
-            <tr>
                 <th>{{ form.passport_scan.label }}</th>
                 <th></th>
             </tr>
@@ -71,12 +55,15 @@
                 <td>{{ form.passport_scan|class:'form-control imgInp' }}</td>
                 <td></td>
             </tr>
+            </tbody>
+        </table>
+        <table class="table">
             <tr>
                 <th>Фотографии</th>
                 <th></th>
             </tr>
-            {{ formset.management_form }}
-            {% for form in formset %}
+            {{ image_formset.management_form }}
+            {% for form in image_formset %}
                 <tr class="image-formset">
                     {% for hidden in form.hidden_fields %}
                         {{ hidden }}
@@ -85,7 +72,30 @@
                     <td>{{ form.DELETE }}</td>
                 </tr>
             {% endfor %}
-            </tbody>
+        </table>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Сайты</th>
+                <th>Адрес</th>
+                <th>Логин</th>
+                <th>Пароль</th>
+                <th></th>
+            </tr>
+            </thead>
+            {{ website_formset.management_form }}
+            {% for form in website_formset %}
+                <tr class="website-formset">
+                    {% for hidden in form.hidden_fields %}
+                        {{ hidden }}
+                    {% endfor %}
+                    <td>{{ form.website|class:'form-control' }}</td>
+                    <td>{{ form.url|class:'form-control' }}</td>
+                    <td>{{ form.login|class:'form-control' }}</td>
+                    <td>{{ form.password|class:'form-control' }}</td>
+                    <td>{{ form.DELETE }}</td>
+                </tr>
+            {% endfor %}
         </table>
         <div class="row my-5">
             <div class="col-md-9"></div>
@@ -98,6 +108,7 @@
 
 {% block scripts %}
     <script type="text/javascript">
+        $('.selectize').selectize();
         $('.image-formset').formset({
             addText: 'Добавить фото',
             deleteText: 'Удалить',
@@ -105,6 +116,13 @@
             deleteCssClass: 'btn btn-danger',
             prefix: 'images',
             added: img_change_event,
+        });
+        $('.website-formset').formset({
+            addText: 'Добавить сайт',
+            deleteText: 'Удалить',
+            addCssClass: 'btn btn-info',
+            deleteCssClass: 'btn btn-danger',
+            prefix: 'form',
         });
 
         function readURL(input) {

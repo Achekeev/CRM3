@@ -47,14 +47,6 @@
                 <th>Процент:</th>
                 <td>{{ cammodel.percent }} %</td>
             </tr>
-            <tr>
-                <th>Логин:</th>
-                <td>{{ cammodel.login }}</td>
-            </tr>
-            <tr>
-                <th>Пароль:</th>
-                <td>{{ cammodel.password }}</td>
-            </tr>
         {% endif %}
         <tr>
             <th>Паспорт:</th>
@@ -65,6 +57,24 @@
                 <td>Отсутствует</td>
             {% endif %}
         </tr>
+        {% if cammodel.websites.all %}
+            <tr>
+                <th>Сайты</th>
+                <th></th>
+            </tr>
+            {% for website in cammodel.websites.all %}
+                <tr>
+                    <td style="border-top: 1px solid #2f2d38"><strong>Сайт:&nbsp;&nbsp;&nbsp;</strong>{{ website.website.name }}</td>
+                    <td style="border-top: 1px solid #2f2d38"><strong>Адрес:&nbsp;&nbsp;&nbsp;</strong><a class="link text-info" target="_blank" href="{{ website.url }}">{{ website.url }}</a></td>
+                </tr>
+                {% if request.user.is_superuser %}
+                    <tr>
+                        <td><strong>Логин:&nbsp;&nbsp;&nbsp;</strong>{{ website.login }}</td>
+                        <td><strong>Пароль:&nbsp;&nbsp;&nbsp;</strong>{{ website.password }}</td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
         <tr>
             <th>Фотографии</th>
             <th></th>

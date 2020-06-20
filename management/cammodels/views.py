@@ -1,12 +1,12 @@
-from crm.forms import CamModelForm, CamModelImageFormset, CamModelFilterForm
+from crm.forms import CamModelForm, CamModelImageFormset, CamModelFilterForm, ProfileWebsiteFormset
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
+from crm.models import CamModel, ProfileWebsite
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
 from django.http import HttpResponse
-from crm.models import CamModel
 from django.urls import reverse
 from django.views import View
 import os
@@ -22,6 +22,8 @@ class CamModelList(LoginRequiredMixin, View):
                 models_list = models_list.filter(name__icontains=filter_form.cleaned_data['name']).order_by('-created_at')
             if filter_form.cleaned_data['city']:
                 models_list = models_list.filter(city=filter_form.cleaned_data['city']).order_by('-created_at')
+            if filter_form.cleaned_data['website']:
+                models_list = models_list.filter(websites__website=filter_form.cleaned_data['website']).order_by('-created_at')
         paginator = Paginator(models_list, 20)
         page_number = int(request.GET.get('page', 1))
         page_obj = paginator.get_page(page_number)
@@ -37,8 +39,7 @@ class CamModelDetail(LoginRequiredMixin, View):
     def get(self, request, pk=None):
         if pk:
             cammodel = CamModel.objects.get(id=pk)
-            images = cammodel.images.all()
-            return render(request, 'management/cammodel/cammodel_detail.html', {'cammodel': cammodel, 'images': images})
+            return render(request, 'management/cammodel/cammodel_detail.html', {'cammodel': cammodel})
         return HttpResponse(status=404)
 
 
@@ -46,16 +47,19 @@ class CamModelDetail(LoginRequiredMixin, View):
 class CamModelCreate(LoginRequiredMixin, View):
     def get(self, request, pk=None):
         form = CamModelForm()
-        formset = CamModelImageFormset()
+        image_formset = CamModelImageFormset()
+        website_formset = ProfileWebsiteFormset(queryset=ProfileWebsite.objects.none())
         if pk:
             cammodel = CamModel.objects.get(id=pk)
             form = CamModelForm(instance=cammodel)
-            formset = CamModelImageFormset(instance=cammodel)
-        return render(request, 'management/cammodel/cammodel_form.html', {'form': form, 'formset': formset})
+            image_formset = CamModelImageFormset(instance=cammodel)
+            website_formset = ProfileWebsiteFormset(queryset=cammodel.websites.all())
+        return render(request, 'management/cammodel/cammodel_form.html', {'form': form, 'image_formset': image_formset, 'website_formset': website_formset})
 
     def post(self, request, pk=None):
         form = CamModelForm(request.POST or None, request.FILES or None)
         images = CamModelImageFormset(request.POST or None, request.FILES or None)
+        websites = ProfileWebsiteFormset(request.POST or None)
         if pk:
             instance = CamModel.objects.get(id=pk)
             form = CamModelForm(request.POST or None, request.FILES or None, instance=instance)
@@ -75,11 +79,21 @@ class CamModelCreate(LoginRequiredMixin, View):
                     image_instance = image.save(commit=False)
                     image_instance.cammodel = cammodel
                     image_instance.save()
+            for website in websites:
+                if website.is_valid():
+                    if 'DELETE' in website.cleaned_data and website.cleaned_data['DELETE']:
+                        if website.cleaned_data['id']:
+                            website.cleaned_data['id'].delete()
+                        continue
+                    if website.empty_permitted and not website.has_changed():
+                        continue
+                    website_instance = website.save()
+                    cammodel.websites.add(website_instance)
             url = reverse('management:cammodel:index')
             if request.GET:
                 url += '?' + request.GET.urlencode()
             return redirect(url)
-        return render(request, 'management/cammodel/cammodel_form.html', {'form': form})
+        return render(request, 'management/cammodel/cammodel_form.html', {'form': form, 'image_formset': images, 'website_formset': websites})
 
 
 @login_required

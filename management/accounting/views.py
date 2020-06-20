@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from crm.forms import DailyTotalForm, AccountingFilterForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -134,7 +132,7 @@ class AccountingCamModelForm(LoginRequiredMixin, View):
                     instance.operator_id = cammodel.operator.id
                     instance.operator_name = cammodel.operator.name
             except Exception as e:
-                pass
+                pass # Who cares !?!
             instance.calculate_rate()
             instance.save()
             url = reverse('management:accounting:index')

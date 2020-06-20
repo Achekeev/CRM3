@@ -67,7 +67,7 @@
     <div class="row my-5">
         <div class="col-md-9"></div>
         <div class="col-md-3">
-            {% if request.user.is_superuser or request.user.is_staff or request.user.supmodel %}
+            {% if request.user.is_superuser or request.user.supmodel %}
                 <a href="{% url 'management:cammodelrequest:create' cammodelrequest.id %}" class="btn btn-block btn-success">Создать модель</a>
             {% endif %}
         </div>

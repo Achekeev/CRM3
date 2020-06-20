@@ -1,0 +1,35 @@
+{% extends 'management/layout.html' %}
+
+{% load static common_tags %}
+
+{% block breadcrumbs %}
+    <div><a class="active" href="{% url 'management:website:index' %}">Сайты</a></div>
+    <div>&nbsp;&nbsp;>&nbsp;&nbsp;</div>
+    <div class="text-middle text-secondary">Создание / Изменение Сайта</div>
+{% endblock %}
+
+{% block content %}
+    <form method="post">{% csrf_token %}
+        <div class="col-md-12">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>{{ form.name.label }}</th>
+                    <th>{{ form.url.label }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>{{ form.name|class:'form-control' }}</td>
+                    <td>{{ form.url|class:'form-control' }}</td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="row my-5 justify-content-end">
+                <div class="col-md-3">
+                    <button type="submit" class="btn btn-block btn-info">Сохранить</button>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}

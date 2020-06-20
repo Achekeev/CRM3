@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="{% static 'css/custom-scrollbar.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/selectize.min.css' %}">
     {% block styles %}{% endblock %}
-    <title>Grusha Studio</title>
+    <title>Adminka</title>
 </head>
 <body>
 <style>
@@ -42,6 +42,7 @@
                 <li><a class="pl-3" href="{% url 'management:supoperator:index' %}">Суп Операторы</a></li>
             {% endif %}
             <li><a class="pl-3" href="{% url 'management:city:index' %}">Города</a></li>
+            <li><a class="pl-3" href="{% url 'management:website:index' %}">Сайты</a></li>
             {#<li>#}
             {#    <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Apps</a>#}
             {#    <ul class="collapse list-unstyled" id="pageSubmenu">#}

@@ -43,6 +43,25 @@
                         {% endif %}
                     </tr>
                 {% endif %}
+                {% if operator.websites.all %}
+                    <tr>
+                        <th>Сайты</th>
+                        <th></th>
+                    </tr>
+                    {% for website in operator.websites.all %}
+                        <tr>
+                            <td style="border-top: 1px solid #2f2d38"><strong>Сайт:&nbsp;&nbsp;&nbsp;</strong>{{ website.website.name }}</td>
+                            <td style="border-top: 1px solid #2f2d38"><strong>Адрес:&nbsp;&nbsp;&nbsp;</strong><a class="link text-info" target="_blank" href="{{ website.url }}">{{ website.url }}</a>
+                            </td>
+                        </tr>
+                        {% if request.user.is_superuser %}
+                            <tr>
+                                <td><strong>Логин:&nbsp;&nbsp;&nbsp;</strong>{{ website.login }}</td>
+                                <td><strong>Пароль:&nbsp;&nbsp;&nbsp;</strong>{{ website.password }}</td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
                 <tr>
                     <th>Паспорт:</th>
                     {% if operator.passport_scan %}

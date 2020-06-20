@@ -12,13 +12,16 @@
             {% if filter_form %}
                 <form action="" method="get">
                     <div class="row mb-3">
-                        <div class="col-md-4">
+                        <div class="col-md-3 px-1">
                             {{ filter_form.city|class:'selectize' }}
                         </div>
-                        <div class="col-md-7">
+                        <div class="col-md-3 px-1">
+                            {{ filter_form.website|class:'selectize' }}
+                        </div>
+                        <div class="col-md-5 px-1">
                             {{ filter_form.name|class:'form-control' }}
                         </div>
-                        <div class="col-md-1">
+                        <div class="col-md-1 px-1">
                             <button class="btn btn-info" type="submit">Поиск</button>
                         </div>
                     </div>
@@ -26,7 +29,7 @@
             {% endif %}
         </div>
         <div class="col-md-4">
-            {% if request.user.is_superuser or request.user.is_staff or request.user.supmodel %}
+            {% if request.user.is_superuser or request.user.supmodel %}
                 <a href="{% url 'management:cammodel:create' %}"
                    class="btn btn-success btn-block">Добавить &nbsp;Модель
                 </a>
@@ -52,9 +55,7 @@
                         <tr>
                             {% if request.user.is_superuser or request.user.is_staff or request.user.supmodel %}
                                 {% if model.images.all %}
-                                    <td class="py-1"><a href="{% url 'management:cammodel:detail' model.id %}"><img src="{{ model.images.all.0.image.url }}"
-                                                                                                                    style="width: 4rem; height: 4rem; border-radius: 2rem; overflow: hidden; object-fit: cover; position: center"></a>
-                                    </td>
+                                    <td class="py-1"><a href="{% url 'management:cammodel:detail' model.id %}"><img src="{{ model.images.all.0.image.url }}" style="width: 4rem; height: 4rem; border-radius: 2rem; overflow: hidden; object-fit: cover; position: center"></a></td>
                                 {% else %}
                                     <td class="py-1">
                                         <svg style="width: 4rem; height: 4rem; border-radius: 2rem; overflow: hidden;" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg">
@@ -68,8 +69,7 @@
                                 <td class="col align-middle"><a class="text-info" href="{% url 'management:cammodel:detail' model.id %}?{{ request.GET.urlencode }}">{{ model.name }}</a></td>
                                 {% if request.user.is_superuser or request.user.is_staff %}
                                     <td class="col align-middle"><a class="btn btn-info" href="{% url 'management:accounting:modelstatistics' model.id %}">Статистика</a></td>
-                                    <td class="col align-middle"><a class="btn {% if model.filled_today %}btn-secondary{% else %}btn-warning{% endif %}"
-                                                                    href="{% url 'management:accounting:createfromcammodel' model.id %}">Ввести Итог</a></td>
+                                    <td class="col align-middle"><a class="btn {% if model.filled_today %}btn-secondary{% else %}btn-warning{% endif %}" href="{% url 'management:accounting:createfromcammodel' model.id %}">Ввести Итог</a></td>
                                 {% else %}
                                     <td></td>
                                     <td></td>
@@ -80,7 +80,7 @@
                                     <td></td>
                                 {% endif %}
                                 {% if request.user.is_superuser %}
-                                    <td class="align-middle"><a class="btn btn-danger" href="{% url 'management:cammodel:remove' model.id %}?{{ request.GET.urlencode }}">Удалить</a></td>
+                                    <td class="col align-middle"><a class="btn btn-danger" href="{% url 'management:cammodel:remove' model.id %}?{{ request.GET.urlencode }}">Удалить</a></td>
                                 {% else %}
                                     <td></td>
                                 {% endif %}

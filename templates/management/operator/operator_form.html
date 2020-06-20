@@ -62,6 +62,30 @@
                     </tr>
                     </tbody>
                 </table>
+                <table class="table mb-5">
+                    <thead>
+                    <tr>
+                        <th>Сайты</th>
+                        <th>Адрес</th>
+                        <th>Логин</th>
+                        <th>Пароль</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    {{ website_formset.management_form }}
+                    {% for form in website_formset %}
+                        <tr class="website-formset">
+                            {% for hidden in form.hidden_fields %}
+                                {{ hidden }}
+                            {% endfor %}
+                            <td>{{ form.website|class:'form-control' }}</td>
+                            <td>{{ form.url|class:'form-control' }}</td>
+                            <td>{{ form.login|class:'form-control' }}</td>
+                            <td>{{ form.password|class:'form-control' }}</td>
+                            <td>{{ form.DELETE }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
                 <div class="row justify-content-end">
                     {% if request.user.is_superuser and form.instance.pk %}
                         <div class="col-2">
@@ -84,6 +108,14 @@
     <script src="{% static 'js/messages.ru-ru.js' %}"></script>
     <script>
         $('.selectize').selectize();
+        $('.website-formset').formset({
+            addText: 'Добавить сайт',
+            deleteText: 'Удалить',
+            addCssClass: 'btn btn-info',
+            deleteCssClass: 'btn btn-danger',
+            prefix: 'form',
+        });
+
         $('.datepicker').each(function (index) {
             $(this).attr('autocomplete', 'off');
             $(this).datepicker({

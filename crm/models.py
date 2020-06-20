@@ -13,6 +13,24 @@ class City(models.Model):
         return self.name
 
 
+class Website(models.Model):
+    name = models.CharField('Сайт', max_length=255)
+    url = models.CharField('URL Адрес', max_length=255, blank=True, null=True)
+
+    def __str__(self):
+        return self.name
+
+
+class ProfileWebsite(models.Model):
+    website = models.ForeignKey(Website, verbose_name='Сайт', on_delete=models.CASCADE)
+    url = models.CharField('URL Адрес', max_length=255, blank=True, null=True)
+    login = models.CharField('Логин', max_length=255, blank=True, null=True)
+    password = models.CharField('Пароль', max_length=255, blank=True, null=True)
+
+    def __str__(self):
+        return self.website.name
+
+
 class CamModel(models.Model):
     name = models.CharField('ФИО', max_length=255)
     passport_scan = models.FileField('Скан паспорта', upload_to='model/passport/', blank=True, null=True)
@@ -21,9 +39,7 @@ class CamModel(models.Model):
     phone = models.CharField('Телефон', max_length=50, blank=True, null=True)
     email = models.CharField('Почта', max_length=255, blank=True, null=True)
     contacts = models.CharField('Доп. Контакты', max_length=255, blank=True, null=True)
-    website = models.CharField('Сайт', max_length=255, blank=True, null=True)
-    login = models.CharField('Логин', max_length=255, blank=True, null=True)
-    password = models.CharField('Пароль', max_length=255, blank=True, null=True)
+    websites = models.ManyToManyField(ProfileWebsite, related_name='cammodels', verbose_name='Сайты', blank=True)
     percent = models.PositiveSmallIntegerField('Процент', default=25, blank=True)
     city = models.ForeignKey(City, verbose_name='Город', max_length=255, on_delete=models.SET_NULL, blank=True, null=True)
     created_at = models.DateTimeField('Дата создания', auto_now_add=True)
@@ -48,7 +64,7 @@ class CamModelImage(models.Model):
 class SupModel(models.Model):
     profile = models.OneToOneField(UserModel, on_delete=models.CASCADE)
     username = models.CharField('Логин', max_length=255)
-    password = models.CharField('Пвроль', max_length=255)
+    password = models.CharField('Пароль', max_length=255)
     name = models.CharField('ФИО', max_length=255)
     phone = models.CharField('Телефон', max_length=50, blank=True, null=True)
     email = models.CharField('Почта', max_length=255, blank=True, null=True)
@@ -90,6 +106,7 @@ class Operator(models.Model):
     percent = models.PositiveSmallIntegerField('Процент', default=25, blank=True)
     cammodel = models.OneToOneField(CamModel, on_delete=models.SET_NULL, verbose_name='Модель', blank=True, null=True)
     city = models.ForeignKey(City, verbose_name='Город', max_length=255, on_delete=models.SET_NULL, blank=True, null=True)
+    websites = models.ManyToManyField(ProfileWebsite, related_name='operators', verbose_name='Сайты', blank=True)
     created_at = models.DateTimeField('Дата создания', auto_now_add=True)
 
     def __str__(self):
@@ -99,7 +116,7 @@ class Operator(models.Model):
 class SupOperator(models.Model):
     profile = models.OneToOneField(UserModel, on_delete=models.CASCADE)
     username = models.CharField('Логин', max_length=255)
-    password = models.CharField('Пвроль', max_length=255)
+    password = models.CharField('Пароль', max_length=255)
     name = models.CharField('ФИО', max_length=255)
     phone = models.CharField('Телефон', max_length=50, blank=True, null=True)
     email = models.CharField('Почта', max_length=255, blank=True, null=True)
@@ -114,6 +131,8 @@ class DailyTotal(models.Model):
     operator_id = models.PositiveIntegerField('ID Оператора', blank=True, null=True)
     operator_name = models.CharField('ФИО Оператора', max_length=255, blank=True, null=True)
     operator_amount = models.PositiveIntegerField('Доля Оператора', default=0, blank=True)
+    website_id = models.PositiveIntegerField('ID Cайта', blank=True, null=True)
+    website_name = models.CharField('Название сайта', max_length=255, blank=True, null=True)
     total = models.PositiveIntegerField('Итого', default=0, blank=True)
     created_at = models.DateTimeField('Дата создания', auto_now_add=True)
 

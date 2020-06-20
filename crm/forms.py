@@ -1,5 +1,5 @@
-from crm.models import CamModel, SupModel, Operator, SupOperator, CamModelImage, CamModelRequest, CamModelRequestImage, DailyTotal, City
-from django.forms import inlineformset_factory
+from crm.models import CamModel, SupModel, Operator, SupOperator, CamModelImage, CamModelRequest, CamModelRequestImage, DailyTotal, City, Website, ProfileWebsite
+from django.forms import inlineformset_factory, modelformset_factory
 from django import forms
 
 
@@ -18,9 +18,31 @@ class CamModelImageForm(forms.ModelForm):
 CamModelImageFormset = inlineformset_factory(CamModel, CamModelImage, form=CamModelImageForm, can_delete=True, extra=1)
 
 
+class ProfileWebsiteForm(forms.ModelForm):
+    class Meta:
+        model = ProfileWebsite
+        exclude = ()
+
+
+ProfileWebsiteFormset = modelformset_factory(ProfileWebsite, form=ProfileWebsiteForm, can_delete=True, extra=1)
+
+
+class PairWebsiteForm(forms.ModelForm):
+    operator_login = forms.CharField(label='Логин', max_length=255, required=False)
+    operator_password = forms.CharField(label='Пароль', max_length=255, required=False)
+
+    class Meta:
+        model = ProfileWebsite
+        exclude = ()
+
+
+PairWebsiteFormset = modelformset_factory(ProfileWebsite, form=PairWebsiteForm, can_delete=True, extra=1)
+
+
 class CamModelFilterForm(forms.Form):
     name = forms.CharField(label='По Имени', max_length=255, required=False, widget=forms.TextInput({'placeholder': 'Поиск По Имени'}))
-    city = forms.ModelChoiceField(label='Город', queryset=City.objects.all(), required=False)
+    city = forms.ModelChoiceField(label='Город', queryset=City.objects.all(), required=False, empty_label='Поиск По Городу')
+    website = forms.ModelChoiceField(label='Сайт', queryset=Website.objects.all(), required=False, empty_label='Поиск По Сайту')
 
 
 class CamModelRequestForm(forms.ModelForm):
@@ -60,7 +82,8 @@ class OperatorForm(forms.ModelForm):
 
 class OperatorFilterForm(forms.Form):
     name = forms.CharField(label='По Имени', max_length=255, required=False, widget=forms.TextInput({'placeholder': 'Поиск По Имени'}))
-    city = forms.ModelChoiceField(label='Город', queryset=City.objects.all(), required=False)
+    city = forms.ModelChoiceField(label='Город', queryset=City.objects.all(), required=False, empty_label='Поиск По Городу')
+    website = forms.ModelChoiceField(label='Сайт', queryset=Website.objects.all(), required=False, empty_label='Поиск По Сайту')
 
 
 class SupOperatorForm(forms.ModelForm):
@@ -74,6 +97,8 @@ class SupOperatorForm(forms.ModelForm):
 
 
 class DailyTotalForm(forms.ModelForm):
+    website = forms.ModelChoiceField(label='Сайт', queryset=Website.objects.all(), required=False, empty_label='Сайт')
+
     class Meta:
         model = DailyTotal
         fields = ('total',)
@@ -93,4 +118,10 @@ class PairForm(forms.Form):
 class CityForm(forms.ModelForm):
     class Meta:
         model = City
+        exclude = ()
+
+
+class WebsiteForm(forms.ModelForm):
+    class Meta:
+        model = Website
         exclude = ()

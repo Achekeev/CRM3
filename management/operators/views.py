@@ -1,13 +1,13 @@
+from crm.forms import OperatorForm, OperatorFilterForm, ProfileWebsiteFormset
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
+from crm.models import Operator, ProfileWebsite
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
 from django.http import HttpResponse
-from crm.forms import OperatorForm, OperatorFilterForm
 from django.urls import reverse
-from crm.models import Operator
 from django.views import View
 
 
@@ -21,6 +21,8 @@ class OperatorList(LoginRequiredMixin, View):
                 operators = operators.filter(name__icontains=filter_form.cleaned_data['name']).order_by('-created_at')
             if filter_form.cleaned_data['city']:
                 operators = operators.filter(city=filter_form.cleaned_data['city']).order_by('-created_at')
+            if filter_form.cleaned_data['website']:
+                operators = operators.filter(websites__website=filter_form.cleaned_data['website']).order_by('-created_at')
         paginator = Paginator(operators, 20)
         page_number = int(request.GET.get('page', 1))
         page_obj = paginator.get_page(page_number)
@@ -44,23 +46,36 @@ class OperatorDetail(LoginRequiredMixin, View):
 class OperatorCreate(LoginRequiredMixin, View):
     def get(self, request, pk=None):
         form = OperatorForm()
+        website_formset = ProfileWebsiteFormset(queryset=ProfileWebsite.objects.none())
         if pk:
             operator = Operator.objects.get(id=pk)
             form = OperatorForm(instance=operator)
-        return render(request, 'management/operator/operator_form.html', {'form': form})
+            website_formset = ProfileWebsiteFormset(queryset=operator.websites.all())
+        return render(request, 'management/operator/operator_form.html', {'form': form, 'website_formset': website_formset})
 
     def post(self, request, pk=None):
         form = OperatorForm(request.POST or None, request.FILES or None)
+        websites = ProfileWebsiteFormset(request.POST or None)
         if pk:
             instance = Operator.objects.get(id=pk)
             form = OperatorForm(request.POST or None, request.FILES or None, instance=instance)
         if form.is_valid():
-            form.save()
+            operator = form.save()
+            for website in websites:
+                if website.is_valid():
+                    if 'DELETE' in website.cleaned_data and website.cleaned_data['DELETE']:
+                        if website.cleaned_data['id']:
+                            website.cleaned_data['id'].delete()
+                        continue
+                    if website.empty_permitted and not website.has_changed():
+                        continue
+                    website_instance = website.save()
+                    operator.websites.add(website_instance)
             url = reverse('management:operator:index')
             if request.GET:
                 url += '?' + request.GET.urlencode()
             return redirect(url)
-        return render(request, 'management/operator/operator_form.html', {'form': form})
+        return render(request, 'management/operator/operator_form.html', {'form': form, 'website_formset': websites})
 
 
 @login_required
