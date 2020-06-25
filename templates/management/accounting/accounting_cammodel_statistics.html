@@ -19,6 +19,7 @@
                         <div class="row">
                             <div class="col-3 px-1">{{ filter_form.date_from|class:'datepicker' }}</div>
                             <div class="col-3 px-1">{{ filter_form.date_to|class:'datepicker' }}</div>
+                            <div class="col-3 px-1">{{ filter_form.website|class:'selectize' }}</div>
                             <div class="col-2 px-1">
                                 <button class="btn btn-secondary" type="submit">Посчитать</button>
                             </div>
@@ -63,6 +64,7 @@
     <script src="{% static 'js/gijgo.min.js' %}"></script>
     <script src="{% static 'js/messages.ru-ru.js' %}"></script>
     <script>
+        $('.selectize').selectize();
         $('.datepicker').each(function (index) {
             $(this).attr('autocomplete', 'off');
             $(this).datepicker({

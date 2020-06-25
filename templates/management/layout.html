@@ -54,6 +54,22 @@
         </ul>
     </nav>
 </div>
+
+<!-- Alert -->
+<div class="row justify-content-end align-content-end">
+    <div class="alerts col-md-6 col-12 col-lg-5 col-xl-4" style="position: absolute;">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% endif %} mt-2 ml-1 mr-1" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>
+<!-- Alert -->
+
 <!-- Page Content -->
 <div id="content">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">

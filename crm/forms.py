@@ -108,6 +108,7 @@ class AccountingFilterForm(forms.Form):
     name = forms.CharField(label='По Имени', max_length=255, required=False, widget=forms.TextInput({'placeholder': 'Поиск По Имени'}))
     date_from = forms.DateField(label='Дата с', required=False, widget=forms.TextInput({'placeholder': 'Дата с'}))
     date_to = forms.DateField(label='Дата по', required=False, widget=forms.TextInput({'placeholder': 'Дата по'}))
+    website = forms.ModelChoiceField(label='Сайт', queryset=Website.objects.all(), required=False, empty_label='Выберите Сайт')
 
 
 class PairForm(forms.Form):
