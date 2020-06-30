@@ -17,10 +17,29 @@
                 <div class="row mb-3">
                     <div class="col-12 pl-0">
                         <form action="" method="get">
-                            <div class="row">
-                                <div class="col-4 px-1">{{ filter_form.name|class:'form-control' }}</div>
-                                <div class="col-2 px-1">{{ filter_form.date_from|class:'datepicker' }}</div>
-                                <div class="col-2 px-1">{{ filter_form.date_to|class:'datepicker' }}</div>
+                            <div class="row px-3">
+                                <div class="col-2 px-1">{{ filter_form.name|class:'form-control' }}</div>
+                                <div class="col-1 px-1">
+                                    <button name="prev_week" class="btn btn-info btn-block">
+                                        <svg style="height: 1rem" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M1011 1376q0 13-10 23l-50 50q-10 10-23 10t-23-10l-466-466q-10-10-10-23t10-23l466-466q10-10 23-10t23
+                                                     10l50 50q10 10 10 23t-10 23l-393 393 393 393q10 10 10 23zm384 0q0 13-10 23l-50 50q-10 10-23
+                                                     10t-23-10l-466-466q-10-10-10-23t10-23l466-466q10-10 23-10t23 10l50 50q10 10 10 23t-10 23l-393 393 393 393q10 10 10 23z" fill="#fff"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div class="col-2 px-1"><input type="text" name="date_from" class="datepicker" value="{{ date_from }}"></div>
+                                <div class="col-2 px-1"><input type="text" name="date_to" class="datepicker" value="{{ date_to }}"></div>
+                                <div class="col-1 px-1">
+                                    <button name="next_week" class="btn btn-info btn-block">
+                                        <svg style="height: 1rem" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M979 960q0 13-10 23l-466 466q-10 10-23 10t-23-10l-50-50q-10-10-10-23t10-23l393-393-393-393q-10-10-10-23t10-23l50-50q10-10
+                                                     23-10t23 10l466 466q10 10 10 23zm384 0q0 13-10 23l-466 466q-10 10-23
+                                                     10t-23-10l-50-50q-10-10-10-23t10-23l393-393-393-393q-10-10-10-23t10-23l50-50q10-10 23-10t23 10l466 466q10 10 10 23z" fill="#fff">
+                                            </path>
+                                        </svg>
+                                    </button>
+                                </div>
                                 <div class="col-2 px-1">{{ filter_form.website|class:'selectize' }}</div>
                                 <div class="col-2 px-1">
                                     <button class="btn btn-secondary btn-block" type="submit">Поиск</button>
@@ -49,6 +68,7 @@
                         <th>{{ cammodel_total }}</th>
                         <th>{{ operator_total }}</th>
                         <th>{{ total }}</th>
+                        <th></th>
                     </tr>
                     {% for daily_total in daily_totals %}
                         <tr>

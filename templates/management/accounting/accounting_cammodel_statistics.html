@@ -17,8 +17,27 @@
                 <div class="col-12 pl-0">
                     <form action="" method="get">
                         <div class="row">
-                            <div class="col-3 px-1">{{ filter_form.date_from|class:'datepicker' }}</div>
-                            <div class="col-3 px-1">{{ filter_form.date_to|class:'datepicker' }}</div>
+                            <div class="col-1 px-1">
+                                <button name="prev_week" class="btn btn-info btn-block">
+                                    <svg style="height: 1rem" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M1011 1376q0 13-10 23l-50 50q-10 10-23 10t-23-10l-466-466q-10-10-10-23t10-23l466-466q10-10 23-10t23
+                                                     10l50 50q10 10 10 23t-10 23l-393 393 393 393q10 10 10 23zm384 0q0 13-10 23l-50 50q-10 10-23
+                                                     10t-23-10l-466-466q-10-10-10-23t10-23l466-466q10-10 23-10t23 10l50 50q10 10 10 23t-10 23l-393 393 393 393q10 10 10 23z" fill="#fff"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="col-2 px-1"><input type="text" name="date_from" class="datepicker" value="{{ date_from }}"></div>
+                            <div class="col-2 px-1"><input type="text" name="date_to" class="datepicker" value="{{ date_to }}"></div>
+                            <div class="col-1 px-1">
+                                <button name="next_week" class="btn btn-info btn-block">
+                                    <svg style="height: 1rem" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M979 960q0 13-10 23l-466 466q-10 10-23 10t-23-10l-50-50q-10-10-10-23t10-23l393-393-393-393q-10-10-10-23t10-23l50-50q10-10
+                                                     23-10t23 10l466 466q10 10 10 23zm384 0q0 13-10 23l-466 466q-10 10-23
+                                                     10t-23-10l-50-50q-10-10-10-23t10-23l393-393-393-393q-10-10-10-23t10-23l50-50q10-10 23-10t23 10l466 466q10 10 10 23z" fill="#fff">
+                                        </path>
+                                    </svg>
+                                </button>
+                            </div>
                             <div class="col-3 px-1">{{ filter_form.website|class:'selectize' }}</div>
                             <div class="col-2 px-1">
                                 <button class="btn btn-secondary" type="submit">Посчитать</button>
@@ -43,13 +62,25 @@
                     <td>{{ cammodel_dict.total }}</td>
                 </tr>
                 <tr>
+                    <th colspan="2">Название сайта</th>
+                    <th>Сумма</th>
+                </tr>
+                {% if cammodel_dict.websites %}
+                    {% for website in cammodel_dict.websites %}
+                        <tr>
+                            <td colspan="2">{{ website.name }}</td>
+                            <td>{{ website.total }}</td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+                <tr>
                     <th>Имя Оператора</th>
                     <th>Доля</th>
                     <th>Итог</th>
                 </tr>
                 {% for data in data_list %}
                     <tr>
-                        <td>{{ data.operator_name }}</td>
+                        <td><a class="text-info" href="{% url 'management:accounting:operatorstatistics' data.operator_id %}">{{ data.operator_name }}</a></td>
                         <td>{{ data.amount }}</td>
                         <td>{{ data.total }}</td>
                     </tr>
