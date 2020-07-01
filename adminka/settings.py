@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'management.apps.ManagementConfig',
     'authentication.apps.AuthenticationConfig',
     'crm.apps.CrmConfig',
+    'common.apps.CommonConfig',
 ]
 
 MIDDLEWARE = [
